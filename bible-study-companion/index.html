@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bible Study Companion — Scripture Mapped</title>
+<meta name="theme-color" content="#F3EAD2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Study Companion">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIkJpYmxlIFN0dWR5IENvbXBhbmlvbiIsICJzaG9ydF9uYW1lIjogIlN0dWR5IENvbXBhbmlvbiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAic3RhcnRfdXJsIjogIi4iLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjRjNFQUQyIiwgInRoZW1lX2NvbG9yIjogIiNGM0VBRDIifQ==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js" defer></script>
+<style>
+:root{
+  /* Parchment theme: this is a long-form reading + writing workbook, not a
+     scannable card list. Light warm paper + dark ink text reads far longer
+     without fatigue than cream-on-near-black does (see QA note 2026-10-21). */
+  --hbr-bg:#F3EAD2;
+  --hbr-line:rgba(140,100,40,.35);
+  --hbr-gold:#8A6A1E;
+  --hbr-gold2:#6B4F14;
+  --hbr-goldd:#8C6A2A;
+  --hbr-cream:#2E2013;
+  --hbr-soft:#6B5A42;
+  --hbr-ember:#A8381E;
+  --hbr-ok:#216B3E;
+  --hbr-foil:linear-gradient(135deg,#6E5116 0%,#9C7A2E 22%,#C9A23E 42%,#AC8730 60%,#6E5116 80%,#9C7A2E 100%);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--hbr-cream);
+  background:radial-gradient(130% 55% at 50% 0%,#FBF5E6 0%,var(--hbr-bg) 62%);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px calc(60px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;color:var(--hbr-cream);margin:0;line-height:1.15;letter-spacing:0}
+p{margin:0}
+.top{padding:40px 10px 0;text-align:center}
+.pill{display:inline-block;border:1px solid var(--hbr-line);background:rgba(140,100,40,.08);color:var(--hbr-gold);font-weight:700;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;padding:7px 14px;border-radius:100px;font-family:'Inter',sans-serif}
+.top h1{font-size:clamp(28px,5vw,38px);margin:18px 0 10px;text-wrap:balance}
+.top h1 em{display:block;font-style:italic;background:var(--hbr-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:15.5px;color:var(--hbr-soft);max-width:48ch;margin:0 auto}
+
+.intro-card, .unit, .closing-card{
+  margin:26px 0 0;
+  padding:26px 22px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#FBF6E8,#F2E7CC);
+  border:1px solid var(--hbr-line);
+  box-shadow:0 26px 50px -30px rgba(80,60,25,.35);
+}
+.intro-card p + p{margin-top:12px;color:#4A3A24;font-size:14.5px}
+.intro-card h3{font-size:19px;margin-bottom:10px;color:var(--hbr-gold2)}
+.intro-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:9px}
+.intro-list li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14px;line-height:1.5;color:#4A3A24}
+.intro-list li::before{content:"✦";display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--hbr-line);color:var(--hbr-gold);font-size:10px}
+
+/* progress bar */
+.progress-wrap{
+  position:sticky;top:0;z-index:5;
+  margin:0 -18px;
+  padding:14px 18px;
+  background:rgba(247,240,221,.92);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--hbr-line);
+}
+.progress-inner{max-width:720px;margin:0 auto}
+.progress-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--hbr-soft);margin-bottom:10px;display:flex;justify-content:space-between}
+.progress-label b{color:var(--hbr-gold2);font-weight:700}
+.progress-track{height:8px;border-radius:100px;background:rgba(140,100,40,.14);border:1px solid var(--hbr-line);overflow:hidden}
+.progress-fill{height:100%;background:var(--hbr-foil);border-radius:100px;transition:width .4s ease;width:0%}
+
+/* section dots — the 9-icon progress row */
+.progress-dots{display:flex;justify-content:space-between;gap:5px;margin-top:10px}
+.progress-dot{
+  flex:1 1 0;display:grid;place-items:center;
+  height:26px;border-radius:9px;
+  background:rgba(140,100,40,.08);
+  border:1px solid var(--hbr-line);
+  color:var(--hbr-soft);
+  font-family:'Inter',sans-serif;font-size:10.5px;font-weight:700;
+  transition:background .35s ease,border-color .35s ease,color .35s ease,transform .3s ease;
+}
+.progress-dot.is-done{
+  background:var(--hbr-foil);
+  border-color:transparent;
+  color:#2A1D06;
+  animation:dotPop .4s ease;
+}
+.progress-dot svg{width:12px;height:12px;display:none}
+.progress-dot.is-done svg{display:block}
+.progress-dot.is-done span{display:none}
+@keyframes dotPop{0%{transform:scale(.7)}55%{transform:scale(1.14)}100%{transform:scale(1)}}
+
+/* unit hero image */
+.unit-image{
+  margin:-26px -22px 20px;
+  border-radius:18px 18px 0 0;
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/10;
+  background:#E4D6B0;
+}
+.unit-image img{width:100%;height:100%;object-fit:cover;display:block}
+.unit-image::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(242,231,204,0) 55%,rgba(242,231,204,.97) 100%);
+}
+
+/* completed celebration state */
+.closing-card{transition:box-shadow .5s ease,border-color .5s ease}
+.closing-card.is-complete{
+  border-color:rgba(140,100,40,.55);
+  box-shadow:0 0 0 1px rgba(140,100,40,.18),0 26px 60px -28px rgba(140,100,40,.3);
+}
+.closing-card .tag.is-complete-tag{color:var(--hbr-gold2)}
+.closing-sparkle{
+  display:inline-block;margin-bottom:12px;font-size:26px;
+  opacity:0;transform:scale(.6);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,1.4,.4,1);
+}
+.closing-card.is-complete .closing-sparkle{opacity:1;transform:scale(1)}
+
+.unit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.unit-tag{font-family:'Inter',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--hbr-gold)}
+.unit h2{font-size:24px;margin:6px 0 10px}
+.unit .unit-blurb{font-size:14.5px;color:var(--hbr-soft);margin-bottom:18px}
+
+.reviewed-label{
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;
+  padding:12px 14px;min-height:44px;border-radius:12px;
+  background:rgba(140,100,40,.07);
+  border:1px solid var(--hbr-line);
+  margin-bottom:20px;
+}
+.reviewed-label input[type="checkbox"]{
+  width:22px;height:22px;flex:0 0 22px;accent-color:var(--hbr-gold);cursor:pointer;
+}
+.reviewed-label span{font-size:13.5px;color:var(--hbr-cream);font-weight:500}
+.reviewed-label:has(input:checked){background:rgba(33,107,62,.12);border-color:rgba(33,107,62,.4)}
+.reviewed-label:has(input:checked) span{color:var(--hbr-ok)}
+
+.question{margin-top:18px}
+.question:first-of-type{margin-top:0}
+.question label{
+  display:block;font-size:14.5px;font-weight:600;color:var(--hbr-gold2);margin-bottom:8px;line-height:1.4;
+}
+.question textarea{
+  width:100%;min-height:90px;resize:vertical;
+  background:#FFFDF6;
+  border:1px solid var(--hbr-line);
+  border-radius:10px;
+  color:var(--hbr-cream);
+  font-family:'Inter',sans-serif;
+  font-size:14.5px;
+  line-height:1.55;
+  padding:12px 14px;
+  outline:none;
+  transition:border-color .2s ease;
+}
+.question textarea::placeholder{color:#9C8A6C}
+.question textarea:focus{border-color:var(--hbr-gold)}
+
+.closing-card{text-align:center}
+.closing-card .tag{display:inline-block;color:var(--hbr-gold);font-weight:700;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;font-family:'Inter',sans-serif;margin-bottom:10px}
+.closing-card h2{font-size:24px;margin-bottom:10px}
+.closing-card p{color:var(--hbr-soft);font-size:14.5px;max-width:48ch;margin:0 auto}
+
+.foot-note{text-align:center;margin-top:24px;font-size:11.5px;color:#8A7857;letter-spacing:.02em}
+
+@media (min-width:900px){
+  .wrap{max-width:780px}
+}
+@media (max-width:380px){
+  .progress-dots{gap:3px}
+  .progress-dot{height:22px;font-size:9.5px;border-radius:7px}
+  .progress-dot svg{width:10px;height:10px}
+}
+
+/* ---------- download: "My Reflections" export ---------- */
+.download-wrap{margin-top:18px}
+.download-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;min-height:50px;
+  border-radius:12px;border:0;
+  background:var(--hbr-foil);color:#1A1208;
+  font-family:'Inter',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.02em;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 16px 32px -16px rgba(140,100,40,.55);
+  transition:transform .15s ease,box-shadow .2s ease;
+}
+.download-btn:hover{transform:translateY(-1px);box-shadow:0 20px 36px -16px rgba(140,100,40,.7)}
+.download-btn:active{transform:translateY(1px)}
+.download-note{text-align:center;font-size:11.5px;color:var(--hbr-soft);margin:10px 0 0;letter-spacing:.01em}
+
+/* ---------- motion: scroll reveal + interactive polish ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+.intro-card,.unit,.closing-card{transition:transform .25s ease,box-shadow .25s ease}
+.intro-card:hover,.unit:hover,.closing-card:hover{transform:translateY(-2px);box-shadow:0 30px 56px -28px rgba(80,60,25,.45)}
+.progress-dot{cursor:default}
+.reviewed-label{transition:background .2s ease,border-color .2s ease}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ---------- print: clean export of the page itself ---------- */
+@media print{
+  .progress-wrap,.download-wrap,.download-note{display:none !important}
+  body{background:#fff !important}
+  .intro-card,.unit,.closing-card{box-shadow:none !important;border:1px solid #ccc !important;break-inside:avoid;page-break-inside:avoid}
+  .unit-image{display:none !important}
+  .question textarea{border:1px solid #999 !important;color:#111 !important}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-label"><span>Your progress</span><span><b id="progress-count">0</b> of 9 sections reviewed</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-dots" id="progress-dots" aria-hidden="true">
+      <div class="progress-dot" data-dot="1"><span>1</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="2"><span>2</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="3"><span>3</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="4"><span>4</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="5"><span>5</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="6"><span>6</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="7"><span>7</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="8"><span>8</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="progress-dot" data-dot="9"><span>9</span><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.8L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="top reveal">
+    <span class="pill">✦ Scripture Mapped ✦</span>
+    <h1>Bible <em>Study Companion</em></h1>
+    <p class="sub">A quiet workbook for walking back through the places and stories you've explored in the atlas — with room to think, and no one grading the answers but you.</p>
+  </div>
+
+  <div class="intro-card reveal">
+    <h3>How to use this companion</h3>
+    <p>This isn't a quiz. It's a place to slow down after you've looked at a map or read a scene in Scripture Mapped, and let it settle somewhere beyond the page.</p>
+    <p>Each of the nine sections below mirrors a part of the atlas, in the same order — from Eden to Paul's voyage to Rome. Open the matching section in the atlas first, then come back here.</p>
+    <ul class="intro-list">
+      <li>Read or revisit that section of the atlas.</li>
+      <li>Answer the reflection questions in your own words — there's no wrong length.</li>
+      <li>Tick "I've reviewed this section" when you're done with it.</li>
+      <li>Everything you write is saved automatically in this browser, so you can close this page and pick up right where you left off.</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="unit reveal" data-unit="1">
+    <div class="unit-image"><img src="bsc-01-beginnings.png" alt="Journal illustration for Beginnings"></div>
+    <div class="unit-head"><span class="unit-tag">Section 1 of 9</span></div>
+    <h2>Beginnings: A World Before Fixed Borders</h2>
+    <p class="unit-blurb">Eden and its rivers, Cain's road to the Land of Nod, the Flood traditions of the Ancient Near East, the Ararat highlands, and Babel among the cities of Shinar.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s1_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s1_q1">The atlas marks the Tigris and Euphrates as identified rivers of Eden, but leaves the Pishon and Gihon unidentified. Why do you think the map is honest about not knowing, instead of just picking a guess and moving on?</label>
+      <textarea id="bsc_s1_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s1_q2">Cain is sent "east of Eden" to the Land of Nod — a direction, not a pin on a map. What does it mean to you that some of Scripture's geography points toward exile and uncertainty rather than toward a known destination?</label>
+      <textarea id="bsc_s1_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s1_q3">Flood traditions appear across Sumer, Akkad, and Babylon, not only in Genesis. Does knowing the flood story sat inside a wider Mesopotamian world change how you read it — and if so, how?</label>
+      <textarea id="bsc_s1_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="unit reveal" data-unit="2">
+    <div class="unit-image"><img src="bsc-02-patriarchs.png" alt="Journal illustration for Patriarchs"></div>
+    <div class="unit-head"><span class="unit-tag">Section 2 of 9</span></div>
+    <h2>Patriarchs: Journeys, Wells and Promises</h2>
+    <p class="unit-blurb">Ur to Haran, Haran to Canaan, the Jordan Plain and Sodom, Moriah and the binding of Isaac, and Jacob's family route down into Egypt.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s2_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s2_q1">Abraham's family moves in stages — Ur to Haran, then Haran to Canaan — rather than in one leap. Where in your own life has a promise unfolded in stages like that, longer and slower than you expected?</label>
+      <textarea id="bsc_s2_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s2_q2">The map shows Beersheba to Moriah as a real, measurable journey — a three-day walk Abraham had time to reconsider every step of the way. Sit with that distance. What do you think was going through his mind on day two?</label>
+      <textarea id="bsc_s2_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s2_q3">Sodom's exact location is still debated between two candidate regions near the Dead Sea. Does the story lose anything for you if we're not certain exactly where it happened — or does the event still stand on its own?</label>
+      <textarea id="bsc_s2_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="unit reveal" data-unit="3">
+    <div class="unit-image"><img src="bsc-03-exodus.png" alt="Journal illustration for Exodus"></div>
+    <div class="unit-head"><span class="unit-tag">Section 3 of 9</span></div>
+    <h2>Exodus: Leaving Egypt</h2>
+    <p class="unit-blurb">Moses and the Nile, the burning bush in Midian, Passover and the night of departure, the crossing of the Sea, and the wilderness camp around the Tabernacle.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s3_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s3_q1">The atlas lists several candidate crossing points for the Sea — the Gulf of Suez, Lake Timsah, the Bitter Lakes — rather than one certain spot. How does it feel to hold a pivotal story loosely on the map, while holding the event itself firmly in faith?</label>
+      <textarea id="bsc_s3_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s3_q2">The wilderness camp was laid out with the Tabernacle at its exact centre, and every tribe's tent arranged around it. What would it look like for your own life to be arranged around a centre like that?</label>
+      <textarea id="bsc_s3_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s3_q3">Moses encountered God at the burning bush far from Egypt, in Midian — not in a temple, not in a palace. Where have you encountered God somewhere you didn't expect to?</label>
+      <textarea id="bsc_s3_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="unit reveal" data-unit="4">
+    <div class="unit-image"><img src="bsc-04-settlement.png" alt="Journal illustration for Settlement and Judges"></div>
+    <div class="unit-head"><span class="unit-tag">Section 4 of 9</span></div>
+    <h2>Settlement and Judges</h2>
+    <p class="unit-blurb">Crossing the Jordan opposite Jericho, the fall of Jericho and Ai, Gibeon's alliance, Hazor's trade network in the north, and the tribal zones of the hill country.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s4_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s4_q1">Israel crosses the Jordan at a specific ford, opposite Jericho, after forty years of wandering. What does it mean to you that a defined threshold — a river, a line on a map — marked the end of that waiting?</label>
+      <textarea id="bsc_s4_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s4_q2">Hazor sat inside a trade network reaching to Mari and Egypt — a real city with real commerce, not just a battle on a page. How does seeing the ordinary, commercial life of these cities change how you picture the conquest narratives?</label>
+      <textarea id="bsc_s4_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s4_q3">The tribal zones — Ephraim, Manasseh, Benjamin, Judah, Dan — show a Canaan divided by family inheritance rather than one unified kingdom yet. What tensions do you imagine came with that kind of patchwork settlement?</label>
+      <textarea id="bsc_s4_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="unit reveal" data-unit="5">
+    <div class="unit-image"><img src="bsc-05-kingdoms.png" alt="Journal illustration for Kingdoms"></div>
+    <div class="unit-head"><span class="unit-tag">Section 5 of 9</span></div>
+    <h2>Kingdoms: Power, Worship and Division</h2>
+    <p class="unit-blurb">The Valley of Elah, Saul and the highlands around Gibeah, David's City of David by the Gihon Spring, Solomon's trade network and Temple, and the eventual split into Israel and Judah.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s5_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s5_q1">David faced Goliath in the Valley of Elah, a real, walkable gap between Philistine and Judahite territory. Looking at that map, what does the literal, physical smallness of that battlefield tell you about the size of the fear David was facing?</label>
+      <textarea id="bsc_s5_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s5_q2">David chose the City of David specifically for its spring — the Gihon — not for its height or its defenses. Where in your own decisions have you chosen the less impressive option because it was the one that actually sustained life?</label>
+      <textarea id="bsc_s5_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s5_q3">Solomon's trade network stretched from Jerusalem to Tyre and down to the Red Sea copper region — wealth and worship built side by side. What do you think is the real risk when prosperity and faith grow in the same season?</label>
+      <textarea id="bsc_s5_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="unit reveal" data-unit="6">
+    <div class="unit-image"><img src="bsc-06-exile.png" alt="Journal illustration for Exile and Return"></div>
+    <div class="unit-head"><span class="unit-tag">Section 6 of 9</span></div>
+    <h2>Exile and Return</h2>
+    <p class="unit-blurb">The fall of Samaria to Assyria, Sennacherib's siege of Lachish and Jerusalem, the fall of Jerusalem to Babylon, Judean communities living in exile at Al-Yahudu, and the Persian-era return and rebuilding.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s6_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s6_q1">Jerusalem was besieged by Sennacherib in 701 BC but not captured, while Lachish was destroyed. Why do you think the map of a disaster that spares one city and levels another matters as much as the story of total destruction would?</label>
+      <textarea id="bsc_s6_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s6_q2">Exiled communities in Babylonia built real, documented settlements like Al-Yahudu — "Judah-town" — along the canal network, far from home but still naming their streets after what they'd lost. How do you keep hold of your own identity in a season that feels like exile?</label>
+      <textarea id="bsc_s6_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s6_q3">The return route from Babylon to Jerusalem followed the Fertile Crescent, ending in a rebuilt city and a Second Temple. What does it look like, practically, to rebuild something after a loss that large?</label>
+      <textarea id="bsc_s6_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="unit reveal" data-unit="7">
+    <div class="unit-image"><img src="bsc-07-jesus.png" alt="Journal illustration for Jesus: Galilee to Jerusalem"></div>
+    <div class="unit-head"><span class="unit-tag">Section 7 of 9</span></div>
+    <h2>Jesus: Galilee to Jerusalem</h2>
+    <p class="unit-blurb">Bethlehem and Nazareth, Capernaum on the Sea of Galilee, the Jordan Valley and the wilderness, the steep ascent from Jericho to Jerusalem, and the final week in the city.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s7_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s7_q1">The road from Jericho to Jerusalem climbs from about 800 feet below sea level to 2,600 feet above it in a short, steep ascent. Picture walking that climb on foot toward a city you knew might kill you. What do you think carried Jesus up that road?</label>
+      <textarea id="bsc_s7_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s7_q2">Capernaum, with Bethsaida and Chorazin nearby on the Sea of Galilee, was the working, everyday base of most of Jesus's ministry — more than Jerusalem ever was. What does it tell you that so much of his life was centred on an ordinary fishing town rather than the capital?</label>
+      <textarea id="bsc_s7_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s7_q3">The atlas marks real, disputed sites for the final week — the Temple Mount, the traditional Church of the Holy Sepulchre, and the alternative site of Gordon's Calvary. Does needing more than one candidate site change anything about how you hold the final week in your own faith?</label>
+      <textarea id="bsc_s7_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="unit reveal" data-unit="8">
+    <div class="unit-image"><img src="bsc-08-earlychurch.png" alt="Journal illustration for Early Church"></div>
+    <div class="unit-head"><span class="unit-tag">Section 8 of 9</span></div>
+    <h2>Early Church: Jerusalem Outward</h2>
+    <p class="unit-blurb">Pentecost in a festival-crowded Jerusalem, the public and private life of the early community, Philip's road through Samaria to Gaza, Caesarea's harbour, and the church taking root in Antioch.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s8_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s8_q1">Pentecost happened in a Jerusalem packed for a pilgrimage festival, full of foreign-born visitors moving through the Temple courts. How does setting Pentecost inside that crowded, specific moment — rather than a generic "one day" — change how you picture it?</label>
+      <textarea id="bsc_s8_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s8_q2">The early church's life is mapped across both public Temple precincts and private homes in the Upper and Lower City. Where in your own life does your faith live more in public, and where does it live more at home, in private?</label>
+      <textarea id="bsc_s8_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s8_q3">Philip's route runs from Jerusalem through Samaria and out onto the lonely desert road to Gaza — away from the centre, not toward it. What do you think it cost Philip to keep choosing the outward road over the central one?</label>
+      <textarea id="bsc_s8_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="unit reveal" data-unit="9">
+    <div class="unit-image"><img src="bsc-09-paul.png" alt="Journal illustration for Paul"></div>
+    <div class="unit-head"><span class="unit-tag">Section 9 of 9</span></div>
+    <h2>Paul: Roads, Ports and Communities</h2>
+    <p class="unit-blurb">Damascus, Tarsus and Antioch as Paul's formative cities, the first journey through Cyprus and Pisidian Antioch, Philippi-Athens-Corinth, Ephesus and the third journey, and the voyage to Rome by way of Malta.</p>
+
+    <label class="reviewed-label"><input type="checkbox" id="bsc_s9_reviewed"><span>I've reviewed this section</span></label>
+
+    <div class="question">
+      <label for="bsc_s9_q1">Before any journey, Paul's story runs through Damascus, Tarsus, and Antioch — years of formation the map takes as seriously as the journeys themselves. What season of quiet formation in your own life doesn't get talked about as much as what came after it?</label>
+      <textarea id="bsc_s9_q1" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s9_q2">Paul spoke in the Areopagus in Athens and in the marketplace — the bema — in Corinth: two very different audiences in two cities side by side on the map. What does it look like for you to say the same essential thing to two very different kinds of people?</label>
+      <textarea id="bsc_s9_q2" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="question">
+      <label for="bsc_s9_q3">The voyage to Rome was wrecked at Malta after passing Crete and Fair Havens — a real, charted, and genuinely dangerous sea route, not a quick trip. When has a "detour" like that shipwreck turned out to matter as much as the destination?</label>
+      <textarea id="bsc_s9_q3" placeholder="Write your thoughts here..."></textarea>
+    </div>
+  </div>
+
+  <div class="closing-card reveal" id="closing-card">
+    <span class="closing-sparkle" aria-hidden="true">✦</span><br>
+    <span class="tag" id="closing-tag">Keep Going</span>
+    <h2 id="closing-heading">Walking the whole road</h2>
+    <p id="closing-text">From the rivers of Eden to a shipwreck off Malta — that's the whole sweep of the story. Come back to any section whenever you want; everything you've written is still here, waiting for you.</p>
+
+    <div class="download-wrap">
+      <button type="button" class="download-btn" id="download-reflections">⬇ Download My Reflections (.txt)</button>
+    </div>
+    <p class="download-note">Keeps everything you've written so far as a plain text file, for your own records.</p>
+  </div>
+
+  <p class="foot-note">Your answers are stored privately in this browser only. Nothing is sent anywhere.</p>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var sectionCount = 9;
+
+  function safeGet(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function safeSet(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (e) {
+      /* storage unavailable (private browsing, quota, etc.) — fail silently */
+    }
+  }
+
+  function fireCelebration() {
+    try {
+      if (typeof window.confetti !== "function") return;
+      var colors = ["#9C7A2E", "#6B4F14", "#2E2013", "#C9A23E"];
+      window.confetti({
+        particleCount: 60,
+        spread: 65,
+        startVelocity: 28,
+        gravity: 0.9,
+        ticks: 180,
+        scalar: 0.8,
+        origin: { y: 0.3 },
+        colors: colors,
+        disableForReducedMotion: true
+      });
+    } catch (e) {
+      /* confetti is a nice-to-have; never let it break the page */
+    }
+  }
+
+  var hasInitialized = false;
+
+  function updateProgress() {
+    var reviewed = 0;
+    for (var i = 1; i <= sectionCount; i++) {
+      var box = document.getElementById("bsc_s" + i + "_reviewed");
+      var dot = document.querySelector('.progress-dot[data-dot="' + i + '"]');
+      var done = !!(box && box.checked);
+      if (done) reviewed++;
+      if (dot) dot.classList.toggle("is-done", done);
+    }
+    var countEl = document.getElementById("progress-count");
+    var fillEl = document.getElementById("progress-fill");
+    if (countEl) countEl.textContent = reviewed;
+    if (fillEl) fillEl.style.width = Math.round((reviewed / sectionCount) * 100) + "%";
+
+    var card = document.getElementById("closing-card");
+    var tag = document.getElementById("closing-tag");
+    var heading = document.getElementById("closing-heading");
+    var text = document.getElementById("closing-text");
+    var wasComplete = card && card.classList.contains("is-complete");
+    var isComplete = reviewed === sectionCount;
+
+    if (card) card.classList.toggle("is-complete", isComplete);
+    if (tag) {
+      tag.classList.toggle("is-complete-tag", isComplete);
+      tag.textContent = isComplete ? "✦ Well Done ✦" : "Keep Going";
+    }
+    if (heading) heading.textContent = isComplete ? "You've walked the whole road" : "Walking the whole road";
+    if (text) {
+      text.textContent = isComplete
+        ? "From the rivers of Eden to a shipwreck off Malta — that's the whole sweep of the story. Come back to any section whenever you want; everything you've written is still here, waiting for you."
+        : "Finish reflecting on each of the nine sections above, and this space will mark the whole road as walked.";
+    }
+    if (isComplete && !wasComplete && hasInitialized) fireCelebration();
+  }
+
+  function restoreField(el) {
+    if (!el || !el.id) return;
+    var saved = safeGet(el.id);
+    if (saved === null) return;
+    if (el.type === "checkbox") {
+      el.checked = saved === "true";
+    } else {
+      el.value = saved;
+    }
+  }
+
+  function wireField(el) {
+    if (!el || !el.id) return;
+    el.addEventListener("change", function () {
+      if (el.type === "checkbox") {
+        safeSet(el.id, el.checked ? "true" : "false");
+        updateProgress();
+      } else {
+        safeSet(el.id, el.value);
+      }
+    });
+    // also save textarea as the user types, not only on blur/change
+    if (el.tagName === "TEXTAREA") {
+      el.addEventListener("input", function () {
+        safeSet(el.id, el.value);
+      });
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // "Download My Reflections" — plain-text export of everything the
+  // reader has written, built straight from the DOM + localStorage.
+  // Real <a download> + Blob works fine on a plain website (this used
+  // to be a Claude Artifact, where downloads needed a sandbox bridge —
+  // not needed here anymore).
+  // ---------------------------------------------------------------
+  function buildReflectionsText() {
+    var lines = [];
+    lines.push("MY REFLECTIONS");
+    lines.push("Bible Study Companion — Scripture Mapped");
+    var now = new Date();
+    try {
+      lines.push("Downloaded " + now.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" }));
+    } catch (e) {
+      lines.push("Downloaded " + now.toDateString());
+    }
+    lines.push("");
+    var countEl = document.getElementById("progress-count");
+    var reviewedCount = countEl ? countEl.textContent : "0";
+    lines.push("Progress: " + reviewedCount + " of " + sectionCount + " sections reviewed");
+    lines.push("");
+
+    var units = document.querySelectorAll(".unit");
+    units.forEach(function (unit) {
+      var tagEl = unit.querySelector(".unit-tag");
+      var headingEl = unit.querySelector("h2");
+      var reviewedBox = unit.querySelector('input[type="checkbox"]');
+      lines.push("----------------------------------------");
+      lines.push((tagEl ? tagEl.textContent.toUpperCase() : "") + (headingEl ? " — " + headingEl.textContent : ""));
+      lines.push("Reviewed: " + (reviewedBox && reviewedBox.checked ? "Yes" : "Not yet"));
+      lines.push("");
+      var questions = unit.querySelectorAll(".question");
+      questions.forEach(function (q) {
+        var labelEl = q.querySelector("label");
+        var textareaEl = q.querySelector("textarea");
+        lines.push("Q: " + (labelEl ? labelEl.textContent.trim() : ""));
+        var answer = textareaEl ? textareaEl.value.trim() : "";
+        lines.push("A: " + (answer || "(no answer written yet)"));
+        lines.push("");
+      });
+    });
+
+    lines.push("----------------------------------------");
+    lines.push("Kept for your own records. This file was generated on your device — nothing here was ever sent anywhere.");
+    return lines.join("\n");
+  }
+
+  function downloadReflections(btn) {
+    var originalLabel = btn ? btn.textContent : null;
+    try {
+      var text = buildReflectionsText();
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "bible-study-companion-my-reflections.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      if (btn) {
+        btn.textContent = "✓ Downloaded";
+        setTimeout(function () { btn.textContent = originalLabel; }, 1800);
+      }
+    } catch (e) {
+      if (btn) {
+        btn.textContent = "Couldn't download — try again";
+        setTimeout(function () { btn.textContent = originalLabel; }, 1800);
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var fields = document.querySelectorAll('input[type="checkbox"][id^="bsc_"], textarea[id^="bsc_"]');
+    fields.forEach(function (el) {
+      restoreField(el);
+      wireField(el);
+    });
+    updateProgress();
+    hasInitialized = true;
+
+    var downloadBtn = document.getElementById("download-reflections");
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", function () { downloadReflections(downloadBtn); });
+    }
+
+    // scroll reveal (skipped for reduced-motion, or if IntersectionObserver is unavailable)
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var revealEls = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    if (reduceMotion) {
+      revealEls.forEach(function (el) { el.classList.add("in-view"); });
+    } else if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+      revealEls.forEach(function (el) { io.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add("in-view"); });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

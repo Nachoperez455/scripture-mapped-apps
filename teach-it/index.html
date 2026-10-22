@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 :root{
   --hbr-bg:#0E0B08;
@@ -148,14 +149,14 @@ button{font-family:inherit}
 .deck-stage{
   position:relative;
   border-radius:18px;overflow:hidden;
-  background:#000;border:1px solid var(--hbr-line);
+  background:var(--hbr-bg);border:1px solid var(--hbr-line);
   box-shadow:0 26px 60px -22px rgba(0,0,0,.9);
-  aspect-ratio:4/5;
-  max-height:72vh;
+  aspect-ratio:2/3;
+  max-height:78vh;
   margin:0 auto;
-  max-width:560px;
+  max-width:480px;
 }
-.deck-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s ease}
+.deck-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .25s ease}
 .deck-stage img.show{opacity:1}
 .deck-caption{
   position:absolute;left:0;right:0;bottom:0;
@@ -208,6 +209,7 @@ button{font-family:inherit}
 .lesson-block li{display:grid;grid-template-columns:20px 1fr;gap:9px;font-size:14px;line-height:1.5;color:#E6DCC6}
 .lesson-block li::before{content:"✦";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--hbr-line);color:var(--hbr-gold);font-size:9px}
 .lesson-block.closing p,.lesson-block.closing li{color:var(--hbr-gold2)}
+.lesson-block.prop{border-style:dashed}
 
 /* ---------- print ---------- */
 @media print{
@@ -326,7 +328,8 @@ const SECTIONS = [
         "The map detail worth pointing out: there are no fixed national borders yet. Everyone in this section is still one extended family, spreading out across one region — the borders show up later, starting next section.",
         "Key thread to land: this opening section isn't really about geography yet — it's about a pattern that repeats through the whole Bible: things get made good, people reach for more than they were given, and the story doesn't end there."
       ],
-      closing: "Why do you think the Bible's history starts with a story about scattering, instead of a story about gathering? What does that tell us about what comes next?"
+      closing: "Why do you think the Bible's history starts with a story about scattering, instead of a story about gathering? What does that tell us about what comes next?",
+      prop: "Bring a tape measure and stretch out roughly 450 feet (or just call out the number) — that's close to the ark's length. Let the group feel the scale before you talk about it."
     }
   },
   {
@@ -342,7 +345,8 @@ const SECTIONS = [
         "Call out the recurring details that tie the family together across the map: wells (where major meetings and marriages happen), a repeated promise about land and descendants that keeps getting passed down, and famine as the thing that eventually pushes the family into Egypt.",
         "Land this: the promise is made to a family that spends most of its time NOT living in the land it was promised. That tension — promised but not yet possessing — is the engine of the whole section."
       ],
-      closing: "What's a promise in your own life that you're still waiting on, the way this family waited on theirs for generations?"
+      closing: "What's a promise in your own life that you're still waiting on, the way this family waited on theirs for generations?",
+      prop: "Bring two water bottles, one full and one empty, and set them side by side — ask which well the group would trust their future to, the way this family trusted wells they didn't dig."
     }
   },
   {
@@ -358,7 +362,8 @@ const SECTIONS = [
         "After the crossing, the story shifts from one dramatic escape to a slower lesson: a whole generation learning to depend day by day on provision (food, water) they don't control. That shift from rescue to ongoing dependence is easy to skip past, but it's the point of the wilderness stretch.",
         "Tie it to the map: notice how much of this section's \"geography\" is uncertain or wilderness, not cities. That's deliberate — it's a story about being in-between, not about arriving yet."
       ],
-      closing: "What does it look like, practically, to depend on provision you don't control — and why is that harder than depending on provision you do control?"
+      closing: "What does it look like, practically, to depend on provision you don't control — and why is that harder than depending on provision you do control?",
+      prop: "Pass around a few crackers or a piece of matzo — this is all you get today, and tomorrow you trust for more. Let them hold it while you talk about the wilderness stretch."
     }
   },
   {
@@ -374,7 +379,8 @@ const SECTIONS = [
         "That unevenness sets up the whole Judges period: without a king, without unified leadership, the pattern becomes a cycle — the people drift, trouble comes, a judge rises to deliver them, things settle, and it starts again.",
         "Name the cycle out loud for the group: drift, trouble, deliverance, peace, drift again. It repeats roughly a dozen times in this one book."
       ],
-      closing: "Where do you recognize that same cycle — drift, trouble, rescue, repeat — in your own life or in the life of your group?"
+      closing: "Where do you recognize that same cycle — drift, trouble, rescue, repeat — in your own life or in the life of your group?",
+      prop: "Tie a rope or ribbon into a loop and trace it with your finger as you name each stage out loud — drift, trouble, deliverance, peace, drift again — so the cycle is seen, not just heard."
     }
   },
   {
@@ -390,7 +396,8 @@ const SECTIONS = [
         "Then the turn: that same unified kingdom splits in two — Israel in the north, Judah in the south — under the weight of its own success and the next generation's mistakes. Point to both halves on the map.",
         "This is the clearest map lesson in the whole atlas: political unity is fragile. A kingdom can go from one shepherd's victory to a divided nation within about three generations."
       ],
-      closing: "What does success tend to do to unity — in a family, a team, or a group like this one?"
+      closing: "What does success tend to do to unity — in a family, a team, or a group like this one?",
+      prop: "Pass around a single smooth stone while you talk about the Valley of Elah — let the group feel how ordinary the weapon actually was."
     }
   },
   {
@@ -406,7 +413,8 @@ const SECTIONS = [
         "Then follow the return route, west again, back toward Jerusalem — this happens under a THIRD empire, Persia, whose king issues the decree that allows the remnant to go home and rebuild.",
         "Underline the surprise of the story: nothing about this ending was expected. Independent kingdoms do not usually get their capital and their religious center back after this long. The map is tracing an against-the-odds reversal, not just a disaster."
       ],
-      closing: "What's something that felt like a complete ending in your own story, that later turned out not to be the end after all?"
+      closing: "What's something that felt like a complete ending in your own story, that later turned out not to be the end after all?",
+      prop: "Bring a packed bag or small box and set it by the door — ask: what's the one thing you'd grab if you had to leave everything else behind?"
     }
   },
   {
@@ -422,7 +430,8 @@ const SECTIONS = [
         "Make the geography do the storytelling: almost the entire ministry happens far from the center of religious and political power, and only the final chapter moves toward that center — deliberately, and on a road that climbs the whole way.",
         "Land the point: the map shows a ministry that starts on the margins and ends at the capital on purpose, not by accident."
       ],
-      closing: "What does the geography of where this ministry happened tell you about who it was for, first?"
+      closing: "What does the geography of where this ministry happened tell you about who it was for, first?",
+      prop: "Bring a pair of worn walking shoes — point out that the climb from Galilee to Jerusalem gains roughly 3,000 feet. This was a journey made on foot, uphill, by choice."
     }
   },
   {
@@ -438,7 +447,8 @@ const SECTIONS = [
         "Each line on the map is a boundary being crossed — cultural, geographic, and religious — and each one happens faster than expected. This whole spread happens within a single generation.",
         "Name the real turning point for the group: this section is the hinge between a story that was mostly about one people in one place, and a story that becomes about every people in every place."
       ],
-      closing: "What boundary — cultural, relational, or otherwise — is your own community still hesitant to cross?"
+      closing: "What boundary — cultural, relational, or otherwise — is your own community still hesitant to cross?",
+      prop: "Lay out a few small items or flags from different countries — spread them across the table to picture the 'every people, every place' moment of Pentecost."
     }
   },
   {
@@ -454,44 +464,51 @@ const SECTIONS = [
         "Point out the pattern behind the travel, not just the travel itself: this isn't aimless movement. Each stop becomes a community that keeps going after the traveler leaves — the goal was never just the journey, it was what got planted along the way.",
         "Land the ending: the final leg of the route is made in chains, as a prisoner headed to trial in Rome. The map's most important line is also its hardest one."
       ],
-      closing: "What's a goal in your own life you'd keep pursuing even if the path to it got harder instead of easier?"
+      closing: "What's a goal in your own life you'd keep pursuing even if the path to it got harder instead of easier?",
+      prop: "Pass around a short length of chain or rope at the end — the final leg of this journey was made in literal chains. Let the group hold that weight for a moment."
     }
   }
 ];
 
 // ---------------------------------------------------------------
-// Save-to-device via the platform's `downloads` capability.
-// A plain <a download> link does nothing inside the artifact
-// viewer, so every save goes through claude.use("downloads").
+// Save-to-device. This is a plain website now (not a sandboxed
+// artifact), so a normal <a download> anchor already triggers a
+// real save prompt on both mobile and desktop — see the markup for
+// each "Save Image" button below. "Save all" is a separate problem:
+// browsers throttle/block several auto-triggered downloads fired in
+// a tight loop, so instead we bundle all 9 images into a single
+// .zip (via JSZip) and trigger ONE download — no throttling, and a
+// nicer experience ("here's your whole pack in one file").
 // ---------------------------------------------------------------
 function filenameFor(s){
   return `teachit-wall-map-${String(s.num).padStart(2,'0')}-${s.title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.webp`;
 }
-async function getDownloads(){
-  try{
-    if (window.claude && typeof window.claude.use === 'function') {
-      return await window.claude.use('downloads');
-    }
-  }catch(e){ /* fall through to null */ }
-  return null;
-}
-async function saveImage(src, filename, btn){
-  const downloads = await getDownloads();
-  const originalLabel = btn ? btn.textContent : null;
-  if (!downloads) {
-    // No downloads capability in this view — open the image so the
-    // viewer can save it manually (long-press / right-click save).
-    window.open(src, '_blank');
-    return;
-  }
+async function saveAllAsZip(btn){
+  const originalLabel = btn.textContent;
   try {
-    if (btn) btn.textContent = '…';
-    const resp = await fetch(src);
-    const blob = await resp.blob();
-    const result = await downloads.save({ filename, data: blob });
-    if (btn) { btn.textContent = result.status === 'saved' ? '✓ Saved' : '✓ Sent'; setTimeout(() => { btn.textContent = originalLabel; }, 1600); }
+    const zip = new JSZip();
+    for (let i = 0; i < SECTIONS.length; i++) {
+      const s = SECTIONS[i];
+      btn.textContent = `⬇ Packing ${i + 1} / ${SECTIONS.length}…`;
+      const resp = await fetch(s.img);
+      const blob = await resp.blob();
+      zip.file(filenameFor(s), blob);
+    }
+    btn.textContent = '⬇ Zipping…';
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'teachit-wall-maps-all-9.zip';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    btn.textContent = '✓ All 9 saved (zip)';
   } catch (err) {
-    if (btn) { btn.textContent = err && err.code === 'declined' ? 'Cancelled' : 'Try again'; setTimeout(() => { btn.textContent = originalLabel; }, 1600); }
+    btn.textContent = 'Try again';
+  } finally {
+    setTimeout(() => { btn.textContent = originalLabel; }, 2200);
   }
 }
 
@@ -510,29 +527,14 @@ SECTIONS.forEach(s => {
     </div>
     <div class="map-img-wrap"><img src="${s.img}" alt="${s.title} wall map" loading="lazy"></div>
     <div class="map-foot">
-      <button type="button" class="save-btn" data-save="single" data-img="${s.img}" data-name="${filenameFor(s)}">⬇ Save Image</button>
+      <a class="save-btn" href="${s.img}" download="${filenameFor(s)}">⬇ Save Image</a>
       <button class="print-btn" data-print="single">Print (desktop)</button>
     </div>`;
   mapsList.appendChild(card);
 });
 document.getElementById('print-all-btn').addEventListener('click', () => window.print());
-document.getElementById('save-all-btn').addEventListener('click', async (e) => {
-  const btn = e.currentTarget;
-  const originalLabel = btn.textContent;
-  for (let i = 0; i < SECTIONS.length; i++) {
-    const s = SECTIONS[i];
-    btn.textContent = `⬇ Saving ${i + 1} / ${SECTIONS.length}…`;
-    await saveImage(s.img, filenameFor(s), null);
-  }
-  btn.textContent = '✓ All 9 sent to your device';
-  setTimeout(() => { btn.textContent = originalLabel; }, 2200);
-});
+document.getElementById('save-all-btn').addEventListener('click', (e) => saveAllAsZip(e.currentTarget));
 mapsList.addEventListener('click', e => {
-  const saveBtn = e.target.closest('[data-save="single"]');
-  if (saveBtn) {
-    saveImage(saveBtn.dataset.img, saveBtn.dataset.name, saveBtn);
-    return;
-  }
   const btn = e.target.closest('[data-print="single"]');
   if (!btn) return;
   const card = btn.closest('.map-card');
@@ -647,6 +649,10 @@ SECTIONS.forEach(s => {
     <div class="lesson-block closing">
       <div class="lb-head"><span class="lb-label">Closing Question</span><span class="lb-time">~2 min</span></div>
       <p>${s.lesson.closing}</p>
+    </div>
+    <div class="lesson-block prop">
+      <div class="lb-head"><span class="lb-label">Bring This</span><span class="lb-time">optional</span></div>
+      <p>${s.lesson.prop}</p>
     </div>`;
   lessonList.appendChild(card);
 });

@@ -123,8 +123,16 @@ img{display:block;max-width:100%}
 .card.open .chev{transform:rotate(180deg);color:var(--hbr-gold)}
 .card-oneline{margin-top:7px;font-size:13.5px;color:var(--hbr-soft);line-height:1.4}
 .card-desc{max-height:0;overflow:hidden;opacity:0;transition:max-height .25s ease,opacity .2s ease,margin-top .25s ease}
-.card.open .card-desc{max-height:200px;opacity:1;margin-top:10px}
+.card.open .card-desc{max-height:310px;opacity:1;margin-top:10px}
 .card-desc-inner{padding-top:10px;border-top:1px solid var(--hbr-line);font-size:14px;color:#E6DCC6;line-height:1.55}
+.card-stats{display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--hbr-soft)}
+.card-stats b{color:var(--hbr-gold2);font-weight:700}
+.card-nav{display:flex;gap:8px;margin-top:12px}
+.card-nav button{flex:1;min-height:36px;background:rgba(245,197,66,.05);border:1px solid var(--hbr-line);color:var(--hbr-soft);
+  border-radius:8px;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;padding:6px 8px;text-align:center;
+  transition:border-color .15s ease,color .15s ease}
+.card-nav button:hover{border-color:var(--hbr-gold);color:var(--hbr-gold2)}
+.card-nav button:disabled{opacity:.35;cursor:default}
 
 .empty{display:none;text-align:center;padding:40px 20px;color:var(--hbr-soft);font-size:14px}
 .empty.show{display:block}
@@ -192,90 +200,90 @@ mark{background:var(--hbr-foil);color:#1A1208;border-radius:3px;padding:0 1px}
 // ---------- DATA: all 66 books ----------
 const BOOKS = [
   // ---- OLD TESTAMENT — Law / Pentateuch (5) ----
-  {name:"Genesis", testament:"Old", category:"Law", desc:"The beginning of everything — creation, the first humans, the flood, and the founding family line of Abraham, Isaac, Jacob, and Joseph."},
-  {name:"Exodus", testament:"Old", category:"Law", desc:"Israel's slavery in Egypt, their dramatic escape under Moses, and the giving of the Ten Commandments at Mount Sinai."},
-  {name:"Leviticus", testament:"Old", category:"Law", desc:"The detailed laws, sacrifices, and priestly instructions given to Israel for worship and daily holy living."},
-  {name:"Numbers", testament:"Old", category:"Law", desc:"Israel's census-taking and their long, difficult 40-year journey through the wilderness toward the promised land."},
-  {name:"Deuteronomy", testament:"Old", category:"Law", desc:"Moses' farewell speeches restating God's laws and covenant to Israel just before they enter the promised land."},
+  {name:"Genesis", testament:"Old", category:"Law", chapters:50, desc:"The beginning of everything — creation, the first humans, the flood, and the founding family line of Abraham, Isaac, Jacob, and Joseph."},
+  {name:"Exodus", testament:"Old", category:"Law", chapters:40, desc:"Israel's slavery in Egypt, their dramatic escape under Moses, and the giving of the Ten Commandments at Mount Sinai."},
+  {name:"Leviticus", testament:"Old", category:"Law", chapters:27, desc:"The detailed laws, sacrifices, and priestly instructions given to Israel for worship and daily holy living."},
+  {name:"Numbers", testament:"Old", category:"Law", chapters:36, desc:"Israel's census-taking and their long, difficult 40-year journey through the wilderness toward the promised land."},
+  {name:"Deuteronomy", testament:"Old", category:"Law", chapters:34, desc:"Moses' farewell speeches restating God's laws and covenant to Israel just before they enter the promised land."},
 
   // ---- OLD TESTAMENT — History (12) ----
-  {name:"Joshua", testament:"Old", category:"History", desc:"Israel crosses into Canaan and conquers and divides the promised land under Joshua's leadership."},
-  {name:"Judges", testament:"Old", category:"History", desc:"A repeating cycle of Israel's unfaithfulness and rescue by a series of flawed military leaders, including Gideon and Samson."},
-  {name:"Ruth", testament:"Old", category:"History", desc:"A short story of loyalty and provision following a Moabite widow named Ruth who becomes part of Israel's royal family line."},
-  {name:"1 Samuel", testament:"Old", category:"History", desc:"The rise of the prophet Samuel, Israel's first king Saul, and the young shepherd David who will succeed him."},
-  {name:"2 Samuel", testament:"Old", category:"History", desc:"David's reign as king of Israel, his triumphs, his serious moral failures, and the turmoil within his family and kingdom."},
-  {name:"1 Kings", testament:"Old", category:"History", desc:"Solomon's wise reign and temple-building, followed by the kingdom splitting into two rival nations, Israel and Judah."},
-  {name:"2 Kings", testament:"Old", category:"History", desc:"The ongoing history of the divided kingdoms through a series of kings, ending in the fall of both Israel and Judah."},
-  {name:"1 Chronicles", testament:"Old", category:"History", desc:"A retelling of Israel's history from Adam through King David, with genealogies and a focus on worship and the temple."},
-  {name:"2 Chronicles", testament:"Old", category:"History", desc:"A retelling of the kings of Judah from Solomon to the Babylonian exile, emphasizing faithfulness to God's covenant."},
-  {name:"Ezra", testament:"Old", category:"History", desc:"Jewish exiles return from Babylon to Jerusalem and rebuild the temple under the leadership of Ezra."},
-  {name:"Nehemiah", testament:"Old", category:"History", desc:"Nehemiah leads the rebuilding of Jerusalem's walls and the spiritual renewal of the returned exiles."},
-  {name:"Esther", testament:"Old", category:"History", desc:"A Jewish woman becomes queen of Persia and risks her life to save her people from a planned massacre."},
+  {name:"Joshua", testament:"Old", category:"History", chapters:24, desc:"Israel crosses into Canaan and conquers and divides the promised land under Joshua's leadership."},
+  {name:"Judges", testament:"Old", category:"History", chapters:21, desc:"A repeating cycle of Israel's unfaithfulness and rescue by a series of flawed military leaders, including Gideon and Samson."},
+  {name:"Ruth", testament:"Old", category:"History", chapters:4, desc:"A short story of loyalty and provision following a Moabite widow named Ruth who becomes part of Israel's royal family line."},
+  {name:"1 Samuel", testament:"Old", category:"History", chapters:31, desc:"The rise of the prophet Samuel, Israel's first king Saul, and the young shepherd David who will succeed him."},
+  {name:"2 Samuel", testament:"Old", category:"History", chapters:24, desc:"David's reign as king of Israel, his triumphs, his serious moral failures, and the turmoil within his family and kingdom."},
+  {name:"1 Kings", testament:"Old", category:"History", chapters:22, desc:"Solomon's wise reign and temple-building, followed by the kingdom splitting into two rival nations, Israel and Judah."},
+  {name:"2 Kings", testament:"Old", category:"History", chapters:25, desc:"The ongoing history of the divided kingdoms through a series of kings, ending in the fall of both Israel and Judah."},
+  {name:"1 Chronicles", testament:"Old", category:"History", chapters:29, desc:"A retelling of Israel's history from Adam through King David, with genealogies and a focus on worship and the temple."},
+  {name:"2 Chronicles", testament:"Old", category:"History", chapters:36, desc:"A retelling of the kings of Judah from Solomon to the Babylonian exile, emphasizing faithfulness to God's covenant."},
+  {name:"Ezra", testament:"Old", category:"History", chapters:10, desc:"Jewish exiles return from Babylon to Jerusalem and rebuild the temple under the leadership of Ezra."},
+  {name:"Nehemiah", testament:"Old", category:"History", chapters:13, desc:"Nehemiah leads the rebuilding of Jerusalem's walls and the spiritual renewal of the returned exiles."},
+  {name:"Esther", testament:"Old", category:"History", chapters:10, desc:"A Jewish woman becomes queen of Persia and risks her life to save her people from a planned massacre."},
 
   // ---- OLD TESTAMENT — Wisdom / Poetry (5) ----
-  {name:"Job", testament:"Old", category:"Wisdom", desc:"A righteous man loses everything and wrestles with the meaning of suffering in long poetic dialogues with friends and with God."},
-  {name:"Psalms", testament:"Old", category:"Wisdom", desc:"A collection of 150 poems and songs of praise, lament, trust, and prayer, written by David and others."},
-  {name:"Proverbs", testament:"Old", category:"Wisdom", desc:"Short, memorable sayings offering practical wisdom for everyday living, relationships, and character, largely attributed to Solomon."},
-  {name:"Ecclesiastes", testament:"Old", category:"Wisdom", desc:"A reflective search for meaning in life's pleasures, work, and wisdom, concluding that lasting purpose is found beyond them."},
-  {name:"Song of Solomon", testament:"Old", category:"Wisdom", desc:"A lyrical love poem celebrating romantic love and desire between a bride and groom."},
+  {name:"Job", testament:"Old", category:"Wisdom", chapters:42, desc:"A righteous man loses everything and wrestles with the meaning of suffering in long poetic dialogues with friends and with God."},
+  {name:"Psalms", testament:"Old", category:"Wisdom", chapters:150, desc:"A collection of 150 poems and songs of praise, lament, trust, and prayer, written by David and others."},
+  {name:"Proverbs", testament:"Old", category:"Wisdom", chapters:31, desc:"Short, memorable sayings offering practical wisdom for everyday living, relationships, and character, largely attributed to Solomon."},
+  {name:"Ecclesiastes", testament:"Old", category:"Wisdom", chapters:12, desc:"A reflective search for meaning in life's pleasures, work, and wisdom, concluding that lasting purpose is found beyond them."},
+  {name:"Song of Solomon", testament:"Old", category:"Wisdom", chapters:8, desc:"A lyrical love poem celebrating romantic love and desire between a bride and groom."},
 
   // ---- OLD TESTAMENT — Major Prophets (5) ----
-  {name:"Isaiah", testament:"Old", category:"Major Prophets", desc:"A sweeping prophetic book warning Judah of coming judgment while promising future restoration and a coming deliverer."},
-  {name:"Jeremiah", testament:"Old", category:"Major Prophets", desc:"A prophet's persistent warnings to Judah before the Babylonian conquest, paired with promises of future hope."},
-  {name:"Lamentations", testament:"Old", category:"Major Prophets", desc:"Five poems of grief mourning the destruction of Jerusalem and its temple by Babylon."},
-  {name:"Ezekiel", testament:"Old", category:"Major Prophets", desc:"A prophet in Babylonian exile delivers vivid visions of judgment on Israel and a future restored temple and people."},
-  {name:"Daniel", testament:"Old", category:"Major Prophets", desc:"A Jewish exile in Babylon faces tests of faith (including a lions' den) and receives visions about future kingdoms."},
+  {name:"Isaiah", testament:"Old", category:"Major Prophets", chapters:66, desc:"A sweeping prophetic book warning Judah of coming judgment while promising future restoration and a coming deliverer."},
+  {name:"Jeremiah", testament:"Old", category:"Major Prophets", chapters:52, desc:"A prophet's persistent warnings to Judah before the Babylonian conquest, paired with promises of future hope."},
+  {name:"Lamentations", testament:"Old", category:"Major Prophets", chapters:5, desc:"Five poems of grief mourning the destruction of Jerusalem and its temple by Babylon."},
+  {name:"Ezekiel", testament:"Old", category:"Major Prophets", chapters:48, desc:"A prophet in Babylonian exile delivers vivid visions of judgment on Israel and a future restored temple and people."},
+  {name:"Daniel", testament:"Old", category:"Major Prophets", chapters:12, desc:"A Jewish exile in Babylon faces tests of faith (including a lions' den) and receives visions about future kingdoms."},
 
   // ---- OLD TESTAMENT — Minor Prophets (12) ----
-  {name:"Hosea", testament:"Old", category:"Minor Prophets", desc:"A prophet's troubled marriage becomes a living picture of Israel's unfaithfulness and God's persistent love."},
-  {name:"Joel", testament:"Old", category:"Minor Prophets", desc:"A call to repentance after a devastating locust plague, with a promise of future spiritual renewal."},
-  {name:"Amos", testament:"Old", category:"Minor Prophets", desc:"A shepherd-prophet confronts Israel's social injustice and empty religious ritual, warning of coming judgment."},
-  {name:"Obadiah", testament:"Old", category:"Minor Prophets", desc:"The shortest Old Testament book, pronouncing judgment on Edom for its mistreatment of Israel."},
-  {name:"Jonah", testament:"Old", category:"Minor Prophets", desc:"A reluctant prophet is swallowed by a great fish before finally preaching repentance to the city of Nineveh."},
-  {name:"Micah", testament:"Old", category:"Minor Prophets", desc:"A prophet condemns corruption among Israel's leaders while promising a coming ruler born in Bethlehem."},
-  {name:"Nahum", testament:"Old", category:"Minor Prophets", desc:"A short prophecy announcing the coming downfall of the brutal Assyrian capital, Nineveh."},
-  {name:"Habakkuk", testament:"Old", category:"Minor Prophets", desc:"A prophet questions why evil goes unpunished and learns to trust God's justice and timing."},
-  {name:"Zephaniah", testament:"Old", category:"Minor Prophets", desc:"A warning of coming judgment on Judah and surrounding nations, followed by a promise of future restoration."},
-  {name:"Haggai", testament:"Old", category:"Minor Prophets", desc:"A short book urging the returned exiles to finish rebuilding the Jerusalem temple."},
-  {name:"Zechariah", testament:"Old", category:"Minor Prophets", desc:"A series of visions encouraging the rebuilding of the temple and pointing to a future king and age of peace."},
-  {name:"Malachi", testament:"Old", category:"Minor Prophets", desc:"The last Old Testament book, confronting Israel's half-hearted worship and promising a coming messenger."},
+  {name:"Hosea", testament:"Old", category:"Minor Prophets", chapters:14, desc:"A prophet's troubled marriage becomes a living picture of Israel's unfaithfulness and God's persistent love."},
+  {name:"Joel", testament:"Old", category:"Minor Prophets", chapters:3, desc:"A call to repentance after a devastating locust plague, with a promise of future spiritual renewal."},
+  {name:"Amos", testament:"Old", category:"Minor Prophets", chapters:9, desc:"A shepherd-prophet confronts Israel's social injustice and empty religious ritual, warning of coming judgment."},
+  {name:"Obadiah", testament:"Old", category:"Minor Prophets", chapters:1, desc:"The shortest Old Testament book, pronouncing judgment on Edom for its mistreatment of Israel."},
+  {name:"Jonah", testament:"Old", category:"Minor Prophets", chapters:4, desc:"A reluctant prophet is swallowed by a great fish before finally preaching repentance to the city of Nineveh."},
+  {name:"Micah", testament:"Old", category:"Minor Prophets", chapters:7, desc:"A prophet condemns corruption among Israel's leaders while promising a coming ruler born in Bethlehem."},
+  {name:"Nahum", testament:"Old", category:"Minor Prophets", chapters:3, desc:"A short prophecy announcing the coming downfall of the brutal Assyrian capital, Nineveh."},
+  {name:"Habakkuk", testament:"Old", category:"Minor Prophets", chapters:3, desc:"A prophet questions why evil goes unpunished and learns to trust God's justice and timing."},
+  {name:"Zephaniah", testament:"Old", category:"Minor Prophets", chapters:3, desc:"A warning of coming judgment on Judah and surrounding nations, followed by a promise of future restoration."},
+  {name:"Haggai", testament:"Old", category:"Minor Prophets", chapters:2, desc:"A short book urging the returned exiles to finish rebuilding the Jerusalem temple."},
+  {name:"Zechariah", testament:"Old", category:"Minor Prophets", chapters:14, desc:"A series of visions encouraging the rebuilding of the temple and pointing to a future king and age of peace."},
+  {name:"Malachi", testament:"Old", category:"Minor Prophets", chapters:4, desc:"The last Old Testament book, confronting Israel's half-hearted worship and promising a coming messenger."},
 
   // ---- NEW TESTAMENT — Gospels (4) ----
-  {name:"Matthew", testament:"New", category:"Gospels", desc:"The life and teaching of Jesus written to show he fulfills Old Testament promise as the long-awaited king."},
-  {name:"Mark", testament:"New", category:"Gospels", desc:"A fast-paced account of Jesus' life, miracles, death, and resurrection, widely considered the earliest written Gospel."},
-  {name:"Luke", testament:"New", category:"Gospels", desc:"A detailed, carefully researched account of Jesus' birth, ministry, death, and resurrection, with special attention to the outsider and the poor."},
-  {name:"John", testament:"New", category:"Gospels", desc:"A theologically rich account of Jesus' life focused on his identity as God's Son, told through his words and signs."},
+  {name:"Matthew", testament:"New", category:"Gospels", chapters:28, desc:"The life and teaching of Jesus written to show he fulfills Old Testament promise as the long-awaited king."},
+  {name:"Mark", testament:"New", category:"Gospels", chapters:16, desc:"A fast-paced account of Jesus' life, miracles, death, and resurrection, widely considered the earliest written Gospel."},
+  {name:"Luke", testament:"New", category:"Gospels", chapters:24, desc:"A detailed, carefully researched account of Jesus' birth, ministry, death, and resurrection, with special attention to the outsider and the poor."},
+  {name:"John", testament:"New", category:"Gospels", chapters:21, desc:"A theologically rich account of Jesus' life focused on his identity as God's Son, told through his words and signs."},
 
   // ---- NEW TESTAMENT — Acts (1) ----
-  {name:"Acts", testament:"New", category:"Acts", desc:"The story of the early church's growth from Jerusalem outward, driven by the apostles Peter and Paul."},
+  {name:"Acts", testament:"New", category:"Acts", chapters:28, desc:"The story of the early church's growth from Jerusalem outward, driven by the apostles Peter and Paul."},
 
   // ---- NEW TESTAMENT — Pauline Epistles (13) ----
-  {name:"Romans", testament:"New", category:"Pauline Epistles", desc:"Paul's systematic letter explaining how people are made right with God through faith, not works."},
-  {name:"1 Corinthians", testament:"New", category:"Pauline Epistles", desc:"Paul addresses division, moral failures, and confusion about spiritual gifts in the troubled Corinthian church."},
-  {name:"2 Corinthians", testament:"New", category:"Pauline Epistles", desc:"Paul defends his ministry and character to the Corinthian church amid conflict and false accusations."},
-  {name:"Galatians", testament:"New", category:"Pauline Epistles", desc:"Paul argues forcefully that salvation comes by faith in Jesus alone, not by keeping religious law."},
-  {name:"Ephesians", testament:"New", category:"Pauline Epistles", desc:"Paul explains the believer's identity in Christ and how that shapes unity, relationships, and daily living."},
-  {name:"Philippians", testament:"New", category:"Pauline Epistles", desc:"A warm, personal letter from Paul in prison, overflowing with joy, gratitude, and encouragement to stay unified."},
-  {name:"Colossians", testament:"New", category:"Pauline Epistles", desc:"Paul defends the supremacy of Christ against false teaching that was creeping into the Colossian church."},
-  {name:"1 Thessalonians", testament:"New", category:"Pauline Epistles", desc:"Paul encourages a young church to keep living faithfully while addressing questions about Jesus' future return."},
-  {name:"2 Thessalonians", testament:"New", category:"Pauline Epistles", desc:"A follow-up letter correcting confusion about the timing of Jesus' return and urging steady, working faith."},
-  {name:"1 Timothy", testament:"New", category:"Pauline Epistles", desc:"Paul's practical instructions to a young church leader on sound teaching, leadership character, and church order."},
-  {name:"2 Timothy", testament:"New", category:"Pauline Epistles", desc:"Paul's final, personal letter urging Timothy to remain faithful and courageous as Paul's ministry nears its end."},
-  {name:"Titus", testament:"New", category:"Pauline Epistles", desc:"Paul instructs Titus on organizing church leadership and promoting good, orderly living on the island of Crete."},
-  {name:"Philemon", testament:"New", category:"Pauline Epistles", desc:"A brief personal letter from Paul appealing to Philemon to graciously receive back a runaway slave, Onesimus."},
+  {name:"Romans", testament:"New", category:"Pauline Epistles", chapters:16, desc:"Paul's systematic letter explaining how people are made right with God through faith, not works."},
+  {name:"1 Corinthians", testament:"New", category:"Pauline Epistles", chapters:16, desc:"Paul addresses division, moral failures, and confusion about spiritual gifts in the troubled Corinthian church."},
+  {name:"2 Corinthians", testament:"New", category:"Pauline Epistles", chapters:13, desc:"Paul defends his ministry and character to the Corinthian church amid conflict and false accusations."},
+  {name:"Galatians", testament:"New", category:"Pauline Epistles", chapters:6, desc:"Paul argues forcefully that salvation comes by faith in Jesus alone, not by keeping religious law."},
+  {name:"Ephesians", testament:"New", category:"Pauline Epistles", chapters:6, desc:"Paul explains the believer's identity in Christ and how that shapes unity, relationships, and daily living."},
+  {name:"Philippians", testament:"New", category:"Pauline Epistles", chapters:4, desc:"A warm, personal letter from Paul in prison, overflowing with joy, gratitude, and encouragement to stay unified."},
+  {name:"Colossians", testament:"New", category:"Pauline Epistles", chapters:4, desc:"Paul defends the supremacy of Christ against false teaching that was creeping into the Colossian church."},
+  {name:"1 Thessalonians", testament:"New", category:"Pauline Epistles", chapters:5, desc:"Paul encourages a young church to keep living faithfully while addressing questions about Jesus' future return."},
+  {name:"2 Thessalonians", testament:"New", category:"Pauline Epistles", chapters:3, desc:"A follow-up letter correcting confusion about the timing of Jesus' return and urging steady, working faith."},
+  {name:"1 Timothy", testament:"New", category:"Pauline Epistles", chapters:6, desc:"Paul's practical instructions to a young church leader on sound teaching, leadership character, and church order."},
+  {name:"2 Timothy", testament:"New", category:"Pauline Epistles", chapters:4, desc:"Paul's final, personal letter urging Timothy to remain faithful and courageous as Paul's ministry nears its end."},
+  {name:"Titus", testament:"New", category:"Pauline Epistles", chapters:3, desc:"Paul instructs Titus on organizing church leadership and promoting good, orderly living on the island of Crete."},
+  {name:"Philemon", testament:"New", category:"Pauline Epistles", chapters:1, desc:"A brief personal letter from Paul appealing to Philemon to graciously receive back a runaway slave, Onesimus."},
 
   // ---- NEW TESTAMENT — General Epistles (8) ----
-  {name:"Hebrews", testament:"New", category:"General Epistles", desc:"An argument that Jesus is superior to the old covenant system, as the final and perfect high priest and sacrifice."},
-  {name:"James", testament:"New", category:"General Epistles", desc:"Practical teaching insisting that genuine faith always shows itself through action, not words alone."},
-  {name:"1 Peter", testament:"New", category:"General Epistles", desc:"Encouragement to Christians facing suffering and persecution to live with hope and honorable conduct."},
-  {name:"2 Peter", testament:"New", category:"General Epistles", desc:"A warning against false teachers and a reminder to hold firmly to the truth as Jesus' return draws near."},
-  {name:"1 John", testament:"New", category:"General Epistles", desc:"Assurance and tests for knowing genuine faith, built around truth, love, and obedience."},
-  {name:"2 John", testament:"New", category:"General Epistles", desc:"A brief letter warning against welcoming false teachers while urging believers to walk in truth and love."},
-  {name:"3 John", testament:"New", category:"General Epistles", desc:"A short personal letter commending hospitality shown to traveling teachers and warning against a divisive leader."},
-  {name:"Jude", testament:"New", category:"General Epistles", desc:"A brief, urgent warning against false teachers, calling believers to defend the faith and persevere."},
+  {name:"Hebrews", testament:"New", category:"General Epistles", chapters:13, desc:"An argument that Jesus is superior to the old covenant system, as the final and perfect high priest and sacrifice."},
+  {name:"James", testament:"New", category:"General Epistles", chapters:5, desc:"Practical teaching insisting that genuine faith always shows itself through action, not words alone."},
+  {name:"1 Peter", testament:"New", category:"General Epistles", chapters:5, desc:"Encouragement to Christians facing suffering and persecution to live with hope and honorable conduct."},
+  {name:"2 Peter", testament:"New", category:"General Epistles", chapters:3, desc:"A warning against false teachers and a reminder to hold firmly to the truth as Jesus' return draws near."},
+  {name:"1 John", testament:"New", category:"General Epistles", chapters:5, desc:"Assurance and tests for knowing genuine faith, built around truth, love, and obedience."},
+  {name:"2 John", testament:"New", category:"General Epistles", chapters:1, desc:"A brief letter warning against welcoming false teachers while urging believers to walk in truth and love."},
+  {name:"3 John", testament:"New", category:"General Epistles", chapters:1, desc:"A short personal letter commending hospitality shown to traveling teachers and warning against a divisive leader."},
+  {name:"Jude", testament:"New", category:"General Epistles", chapters:1, desc:"A brief, urgent warning against false teachers, calling believers to defend the faith and persevere."},
 
   // ---- NEW TESTAMENT — Apocalyptic / Revelation (1) ----
-  {name:"Revelation", testament:"New", category:"Apocalyptic", desc:"A series of visions given to John depicting the ultimate triumph of God over evil and the renewal of all creation."},
+  {name:"Revelation", testament:"New", category:"Apocalyptic", chapters:22, desc:"A series of visions given to John depicting the ultimate triumph of God over evil and the renewal of all creation."},
 ];
 
 // sanity check (dev-time only, harmless in production)
@@ -457,6 +465,9 @@ function render(){
     const testamentTag = book.testament === "Old" ? "ot" : "nt";
     const testamentLabel = book.testament === "Old" ? "OT" : "NT";
     const iconFile = CATEGORY_ICON[book.category];
+    const canonIdx = BOOKS.indexOf(book);
+    const prevBook = BOOKS[canonIdx - 1] || null;
+    const nextBook = BOOKS[canonIdx + 1] || null;
 
     card.innerHTML = `
       <div class="card-head">
@@ -471,22 +482,45 @@ function render(){
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <p class="card-oneline">${highlight(book.desc, query)}</p>
-      <div class="card-desc"><div class="card-desc-inner">${highlight(book.desc, query)}</div></div>
+      <div class="card-desc"><div class="card-desc-inner">
+        ${highlight(book.desc, query)}
+        <div class="card-stats"><span>Book <b>${canonIdx + 1}</b> of 66</span><span><b>${book.chapters}</b> chapter${book.chapters === 1 ? "" : "s"}</span></div>
+        <div class="card-nav">
+          <button type="button" class="nav-prev" ${prevBook ? "" : "disabled"}>${prevBook ? "← " + prevBook.name : "← —"}</button>
+          <button type="button" class="nav-next" ${nextBook ? "" : "disabled"}>${nextBook ? nextBook.name + " →" : "— →"}</button>
+        </div>
+      </div></div>
     `;
 
-    card.addEventListener("click", () => {
+    function toggleOpen(){
       openCard = (openCard === book.name) ? null : book.name;
       if(openCard === book.name) markExplored(book.name);
       render();
-    });
+    }
+
+    card.addEventListener("click", toggleOpen);
     card.addEventListener("keydown", (e) => {
       if(e.key === "Enter" || e.key === " "){
         e.preventDefault();
-        openCard = (openCard === book.name) ? null : book.name;
-        if(openCard === book.name) markExplored(book.name);
-        render();
+        toggleOpen();
       }
     });
+
+    const jumpTo = (target) => {
+      openCard = target.name;
+      markExplored(target.name);
+      query = "";
+      activeTestament = null;
+      activeCategory = null;
+      document.getElementById("search").value = "";
+      render();
+      const el = grid.querySelector(`[data-name="${CSS.escape(target.name)}"]`);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"center"});
+    };
+    const prevBtn = card.querySelector(".nav-prev");
+    const nextBtn = card.querySelector(".nav-next");
+    if(prevBtn) prevBtn.addEventListener("click", (e) => { e.stopPropagation(); if(prevBook) jumpTo(prevBook); });
+    if(nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); if(nextBook) jumpTo(nextBook); });
 
     grid.appendChild(card);
   });
