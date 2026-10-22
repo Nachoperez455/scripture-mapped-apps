@@ -176,12 +176,65 @@ a{color:var(--hbr-gold)}
 .njer-stat{padding:14px 14px;border-radius:12px;background:rgba(245,197,66,.06);border:1px solid var(--rev-line)}
 .njer-stat .n{font-family:'Cinzel',serif;font-weight:700;font-size:18px;color:var(--hbr-gold2)}
 .njer-stat .l{font-size:11px;color:var(--hbr-soft);letter-spacing:.04em;margin-top:2px}
-.njer-gems{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:22px}
+.gems-caption{position:relative;z-index:1;font-size:12.5px;color:var(--hbr-soft);max-width:48ch;margin:0 auto 14px;line-height:1.55}
+.gems-caption b{color:var(--hbr-gold2);font-weight:700}
+.njer-gems{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:10px}
 .gem{
-  display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.03);
+  appearance:none;display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.03);
   border:1px solid rgba(245,197,66,.18);min-height:44px;font-size:12px;color:#E6DCC6;text-align:left;
+  font-family:'Inter',sans-serif;cursor:pointer;width:100%;position:relative;overflow:hidden;
 }
 .gem .swatch{width:14px;height:14px;border-radius:3px;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.gem .gem-face{display:block;transition:opacity .25s ease}
+.gem .gem-front{color:var(--hbr-soft);font-style:italic}
+.gem .gem-back{display:none;color:var(--hbr-gold2);font-weight:600}
+.gem.revealed{border-color:var(--hbr-gold);background:rgba(245,197,66,.08)}
+.gem.revealed .gem-front{display:none}
+.gem.revealed .gem-back{display:block;animation:gem-pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes gem-pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.gems-progress{position:relative;z-index:1;text-align:center;font-size:12px;color:var(--hbr-gold);font-weight:600;
+  letter-spacing:.03em;margin-bottom:22px;transition:color .3s ease}
+.gems-progress.all-done{color:var(--rev-ok)}
+.njer-shell.all-gems .njer-cube{animation:cube-glow 1.8s ease-in-out 1}
+@keyframes cube-glow{0%,100%{filter:none}50%{filter:drop-shadow(0 0 18px rgba(245,197,66,.9))}}
+
+/* ---------- cube + gem captions ---------- */
+.njer-caption{position:relative;z-index:1;font-size:12px;color:var(--hbr-soft);max-width:40ch;margin:0 auto 10px;line-height:1.5}
+
+/* ---------- New Jerusalem hero video ---------- */
+.njer-hero video{display:block;width:100%;height:auto}
+
+/* ---------- church quiz ---------- */
+.quiz-wrap{margin-top:22px}
+.quiz-toggle{
+  width:100%;min-height:48px;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(135deg,rgba(245,197,66,.12),rgba(107,91,214,.1));border:1px solid var(--rev-line);
+  color:var(--hbr-gold2);font-family:'Inter',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.03em;
+  border-radius:12px;cursor:pointer;transition:border-color .2s ease,background .2s ease;
+}
+.quiz-toggle:hover{border-color:var(--hbr-gold)}
+.quiz-body{margin-top:14px;padding:20px;border-radius:16px;background:linear-gradient(180deg,#171229,#0E0C18);
+  border:1px solid var(--rev-line);box-shadow:0 20px 40px -20px rgba(0,0,0,.8)}
+.quiz-progress{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--hbr-soft);margin-bottom:10px}
+.quiz-q p.quiz-prompt{font-size:14px;color:#E6DCC6;margin-bottom:14px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  min-height:44px;padding:11px 14px;border-radius:10px;background:rgba(245,197,66,.05);border:1px solid var(--rev-line);
+  color:var(--hbr-cream);font-family:'Inter',sans-serif;font-size:13.5px;text-align:left;cursor:pointer;
+  transition:border-color .15s ease,background .15s ease;
+}
+.quiz-opt:hover{border-color:var(--hbr-gold)}
+.quiz-opt.correct{border-color:var(--rev-ok);background:rgba(91,191,131,.14);color:#BFEBCF}
+.quiz-opt.wrong{border-color:var(--rev-ember);background:rgba(201,74,44,.14);color:#F2C2B4}
+.quiz-opt:disabled{cursor:default}
+.quiz-feedback{margin-top:12px;font-size:13px;color:var(--hbr-soft);line-height:1.5}
+.quiz-next{margin-top:14px;min-height:44px;width:100%;background:rgba(245,197,66,.1);border:1px solid var(--rev-line);
+  color:var(--hbr-cream);border-radius:10px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer}
+.quiz-next:hover{border-color:var(--hbr-gold)}
+.quiz-done{text-align:center}
+.quiz-done p{font-size:14.5px;color:#E6DCC6;margin-bottom:14px}
+.quiz-done button{min-height:44px;padding:0 20px;background:var(--hbr-foil);color:#1A1208;border:0;border-radius:10px;
+  font-family:'Inter',sans-serif;font-weight:700;font-size:13px;cursor:pointer}
 .njer-text{position:relative;z-index:1;text-align:left;font-size:14.5px;line-height:1.65;color:#E6DCC6;max-width:560px;margin:0 auto}
 .njer-text p + p{margin-top:12px}
 .njer-text em{color:var(--hbr-gold2);font-style:normal;font-weight:600}
@@ -284,6 +337,10 @@ a{color:var(--hbr-gold)}
       <p>Tap a church to read its own message, straight from the text: what it got right, what it was called to fix, and what was promised to it.</p>
     </div>
 
+    <div class="hero-frame reveal" style="margin-top:18px">
+      <img src="rd-ephesus-scene.jpg" alt="The ruins of ancient Ephesus at golden sunset, one of the seven churches addressed in Revelation 2-3">
+    </div>
+
     <div class="map-shell">
       <div class="map-stage">
         <img class="map-art" src="rd-map-asia-minor.jpg" alt="Antique illustrated map of the Aegean coastline and Roman Asia Minor">
@@ -326,6 +383,23 @@ a{color:var(--hbr-gold)}
       <div class="church-nav">
         <button type="button" id="ccPrev">← Previous church</button>
         <button type="button" id="ccNext">Next church →</button>
+      </div>
+    </div>
+
+    <div class="quiz-wrap reveal" id="churchQuiz">
+      <button type="button" class="quiz-toggle" id="quizToggle">✦ Test Yourself: Match The Church ✦</button>
+      <div class="quiz-body" id="quizBody" hidden>
+        <div class="quiz-q" id="quizQ">
+          <span class="quiz-progress" id="quizProgress">Question 1 of 7</span>
+          <p class="quiz-prompt" id="quizPrompt"></p>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p class="quiz-feedback" id="quizFeedback" hidden></p>
+          <button type="button" class="quiz-next" id="quizNext" hidden>Next question →</button>
+        </div>
+        <div class="quiz-done" id="quizDone" hidden>
+          <p>You scored <b id="quizScore"></b> of 7. Want to double-check one? Scroll up and tap its pin on the map.</p>
+          <button type="button" id="quizRestart">Play again</button>
+        </div>
       </div>
     </div>
   </div>
@@ -413,7 +487,10 @@ a{color:var(--hbr-gold)}
 
     <div class="njer-shell">
       <div class="njer-hero">
-        <img src="rd-new-jerusalem.jpg" alt="The New Jerusalem descending from heaven, a radiant walled city of gold and jewels" id="njerImg">
+        <video id="njerImg" poster="rd-new-jerusalem.jpg" autoplay muted loop playsinline preload="metadata"
+          aria-label="The New Jerusalem descending from heaven, a radiant walled city of gold and jewels, light pulsing from its towers">
+          <source src="rd-new-jerusalem.mp4" type="video/mp4">
+        </video>
       </div>
       <svg class="njer-cube" viewBox="0 0 200 180" aria-hidden="true">
         <defs>
@@ -428,6 +505,7 @@ a{color:var(--hbr-gold)}
         <circle cx="52" cy="62" r="3" fill="#FFF3C9" opacity=".8"/>
         <circle cx="148" cy="62" r="3" fill="#FFF3C9" opacity=".8"/>
       </svg>
+      <p class="njer-caption">The city is described as a perfect cube — equal in length, width and height (Revelation 21:16).</p>
       <p class="njer-label">A city, coming down</p>
       <h2 class="glow-violet" style="font-size:clamp(24px,5vw,32px)">Holy City, New Jerusalem</h2>
       <p class="njer-sub">John sees it <em>"coming down out of heaven from God, prepared as a bride adorned for her husband"</em> (21:2) — described in exact, measured terms, not vague glory-language.</p>
@@ -439,20 +517,23 @@ a{color:var(--hbr-gold)}
         <div class="njer-stat"><div class="n">12 foundations</div><div class="l">named for the twelve apostles of the Lamb (21:14)</div></div>
       </div>
 
-      <div class="njer-gems">
-        <div class="gem"><span class="swatch" style="background:#C94A2C"></span>Jasper</div>
-        <div class="gem"><span class="swatch" style="background:#2F5FA8"></span>Sapphire</div>
-        <div class="gem"><span class="swatch" style="background:#7FA6B0"></span>Chalcedony</div>
-        <div class="gem"><span class="swatch" style="background:#2E8B57"></span>Emerald</div>
-        <div class="gem"><span class="swatch" style="background:#8A5A3C"></span>Sardonyx</div>
-        <div class="gem"><span class="swatch" style="background:#B5342E"></span>Carnelian</div>
-        <div class="gem"><span class="swatch" style="background:#D4C14A"></span>Chrysolite</div>
-        <div class="gem"><span class="swatch" style="background:#4FA3A0"></span>Beryl</div>
-        <div class="gem"><span class="swatch" style="background:#E3B23C"></span>Topaz</div>
-        <div class="gem"><span class="swatch" style="background:#8FBF5A"></span>Chrysoprase</div>
-        <div class="gem"><span class="swatch" style="background:#5B4FA3"></span>Jacinth</div>
-        <div class="gem"><span class="swatch" style="background:#9B6BB5"></span>Amethyst</div>
+      <p class="gems-caption">The 12 foundation stones named in <b>Revelation 21:19&ndash;20</b> — each layer of the city's wall is built from one. <em>Tap each stone to discover its name and place in the wall.</em></p>
+
+      <div class="njer-gems" id="gemsGrid">
+        <button type="button" class="gem" data-order="1" data-name="Jasper"><span class="swatch" style="background:#C94A2C"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">1st · Jasper</span></button>
+        <button type="button" class="gem" data-order="2" data-name="Sapphire"><span class="swatch" style="background:#2F5FA8"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">2nd · Sapphire</span></button>
+        <button type="button" class="gem" data-order="3" data-name="Chalcedony"><span class="swatch" style="background:#7FA6B0"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">3rd · Chalcedony</span></button>
+        <button type="button" class="gem" data-order="4" data-name="Emerald"><span class="swatch" style="background:#2E8B57"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">4th · Emerald</span></button>
+        <button type="button" class="gem" data-order="5" data-name="Sardonyx"><span class="swatch" style="background:#8A5A3C"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">5th · Sardonyx</span></button>
+        <button type="button" class="gem" data-order="6" data-name="Carnelian"><span class="swatch" style="background:#B5342E"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">6th · Carnelian</span></button>
+        <button type="button" class="gem" data-order="7" data-name="Chrysolite"><span class="swatch" style="background:#D4C14A"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">7th · Chrysolite</span></button>
+        <button type="button" class="gem" data-order="8" data-name="Beryl"><span class="swatch" style="background:#4FA3A0"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">8th · Beryl</span></button>
+        <button type="button" class="gem" data-order="9" data-name="Topaz"><span class="swatch" style="background:#E3B23C"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">9th · Topaz</span></button>
+        <button type="button" class="gem" data-order="10" data-name="Chrysoprase"><span class="swatch" style="background:#8FBF5A"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">10th · Chrysoprase</span></button>
+        <button type="button" class="gem" data-order="11" data-name="Jacinth"><span class="swatch" style="background:#5B4FA3"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">11th · Jacinth</span></button>
+        <button type="button" class="gem" data-order="12" data-name="Amethyst"><span class="swatch" style="background:#9B6BB5"></span><span class="gem-face gem-front">Tap to reveal</span><span class="gem-face gem-back">12th · Amethyst</span></button>
       </div>
+      <p class="gems-progress" id="gemsProgress">0 of 12 foundation stones discovered</p>
 
       <div class="njer-text">
         <p>Each of the twelve foundations is adorned with one of these precious stones (21:19&ndash;20), and each of the twelve gates is a single pearl (21:21). The main street of the city is <em>"pure gold, like transparent glass"</em> (21:21).</p>
@@ -561,8 +642,147 @@ a{color:var(--hbr-gold)}
     });
   });
 
+  /* ---- gems: tap-to-discover-all-12 ---- */
+  (function(){
+    var GEMS_KEY = 'sm_rev_gems_discovered';
+    var gems = Array.prototype.slice.call(document.querySelectorAll('#gemsGrid .gem'));
+    var progressEl = document.getElementById('gemsProgress');
+    var shell = document.querySelector('.njer-shell');
+    var discovered = [];
+    try{
+      var raw = localStorage.getItem(GEMS_KEY);
+      if(raw) discovered = JSON.parse(raw);
+    }catch(e){ /* no storage, track in-memory only */ }
+
+    function save(){ try{ localStorage.setItem(GEMS_KEY, JSON.stringify(discovered)); }catch(e){} }
+
+    function updateProgress(){
+      var n = discovered.length;
+      progressEl.textContent = n + ' of 12 foundation stones discovered';
+      progressEl.classList.toggle('all-done', n === 12);
+      if(n === 12 && shell) shell.classList.add('all-gems');
+    }
+
+    function reveal(gem){
+      var order = gem.dataset.order;
+      if(!gem.classList.contains('revealed')){
+        gem.classList.add('revealed');
+        if(discovered.indexOf(order) === -1){ discovered.push(order); save(); }
+      }
+      gem.setAttribute('aria-label', order + 'th foundation, ' + gem.dataset.name);
+      updateProgress();
+    }
+
+    gems.forEach(function(gem){
+      if(discovered.indexOf(gem.dataset.order) > -1) gem.classList.add('revealed');
+      gem.addEventListener('click', function(){ reveal(gem); });
+    });
+    updateProgress();
+  })();
+
+  /* ---- Test Yourself: Match The Church quiz ---- */
+  (function(){
+    var QUIZ = [
+      {name:"Ephesus", clue:"This church worked hard and tested false apostles — but Jesus said it had “left its first love.”"},
+      {name:"Smyrna", clue:"This church faced real poverty and persecution — and received no rebuke at all."},
+      {name:"Pergamum", clue:"This church stayed faithful even “where Satan's throne is” — but tolerated some who ate food sacrificed to idols."},
+      {name:"Thyatira", clue:"This church's good works were increasing — yet it tolerated a false prophetess it calls “Jezebel.”"},
+      {name:"Sardis", clue:"This church had a reputation for being alive — but Jesus said it was actually dead."},
+      {name:"Philadelphia", clue:"This church had “little strength” — yet Jesus gave it an open door no one could shut, and no rebuke."},
+      {name:"Laodicea", clue:"This church called itself rich and in need of nothing — but Jesus called it wretched, poor, blind and naked."}
+    ];
+    var ALL_NAMES = QUIZ.map(function(q){ return q.name; });
+    var toggle = document.getElementById('quizToggle');
+    var body = document.getElementById('quizBody');
+    var progress = document.getElementById('quizProgress');
+    var prompt = document.getElementById('quizPrompt');
+    var optionsEl = document.getElementById('quizOptions');
+    var feedback = document.getElementById('quizFeedback');
+    var nextBtn = document.getElementById('quizNext');
+    var quizQ = document.getElementById('quizQ');
+    var doneEl = document.getElementById('quizDone');
+    var scoreEl = document.getElementById('quizScore');
+    var restartBtn = document.getElementById('quizRestart');
+    var order = [], qi = 0, score = 0, started = false;
+
+    function shuffle(arr){
+      var a = arr.slice();
+      for(var i = a.length - 1; i > 0; i--){
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function startQuiz(){
+      order = shuffle(QUIZ.map(function(_, i){ return i; }));
+      qi = 0; score = 0;
+      quizQ.hidden = false; doneEl.hidden = true;
+      renderQuestion();
+    }
+
+    function renderQuestion(){
+      var q = QUIZ[order[qi]];
+      progress.textContent = 'Question ' + (qi + 1) + ' of ' + QUIZ.length;
+      prompt.textContent = q.clue + ' Which church is this?';
+      feedback.hidden = true;
+      nextBtn.hidden = true;
+      var distractors = shuffle(ALL_NAMES.filter(function(n){ return n !== q.name; })).slice(0, 3);
+      var choices = shuffle([q.name].concat(distractors));
+      optionsEl.innerHTML = '';
+      choices.forEach(function(name){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'quiz-opt';
+        btn.textContent = name;
+        btn.addEventListener('click', function(){ answer(name, q.name, btn); });
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function answer(picked, correct, btn){
+      Array.prototype.slice.call(optionsEl.children).forEach(function(b){
+        b.disabled = true;
+        if(b.textContent === correct) b.classList.add('correct');
+        else if(b === btn) b.classList.add('wrong');
+      });
+      var ok = picked === correct;
+      if(ok) score++;
+      feedback.hidden = false;
+      feedback.textContent = ok ? 'Correct — ' + correct + '.' : 'Not quite — that was ' + correct + '.';
+      nextBtn.hidden = false;
+      nextBtn.textContent = (qi < QUIZ.length - 1) ? 'Next question →' : 'See my score →';
+    }
+
+    nextBtn.addEventListener('click', function(){
+      qi++;
+      if(qi < QUIZ.length){
+        renderQuestion();
+      } else {
+        quizQ.hidden = true;
+        doneEl.hidden = false;
+        scoreEl.textContent = score;
+      }
+    });
+
+    toggle.addEventListener('click', function(){
+      var opening = body.hidden;
+      body.hidden = !body.hidden;
+      toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      if(opening && !started){ started = true; startQuiz(); }
+      if(opening) body.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+
+    restartBtn.addEventListener('click', startQuiz);
+  })();
+
   /* ---- motion: scroll reveal + hero parallax (skipped for reduced-motion) ---- */
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var njerVideo = document.getElementById('njerImg');
+  if(njerVideo && njerVideo.tagName === 'VIDEO' && reduceMotion){
+    njerVideo.removeAttribute('autoplay');
+    njerVideo.pause();
+  }
   var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
   if(reduceMotion){
     revealEls.forEach(function(el){ el.classList.add('in-view'); });

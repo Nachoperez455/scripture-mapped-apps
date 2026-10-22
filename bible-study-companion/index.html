@@ -42,9 +42,25 @@ body{
   padding-right:env(safe-area-inset-right);
 }
 .wrap{max-width:720px;margin:0 auto;padding:0 18px calc(60px + env(safe-area-inset-bottom))}
+
+/* hero image: the page's "cover shot" — first thing visible under the sticky bar */
+.hero-image{
+  margin:0 -18px 0;
+  border-radius:0 0 22px 22px;
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:1/1;
+  background:#E4D6B0;
+  box-shadow:0 26px 50px -30px rgba(80,60,25,.4);
+}
+.hero-image img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-image::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(251,245,230,0) 55%,rgba(251,245,230,.96) 100%);
+}
 h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;color:var(--hbr-cream);margin:0;line-height:1.15;letter-spacing:0}
 p{margin:0}
-.top{padding:40px 10px 0;text-align:center}
+.top{padding:22px 10px 0;text-align:center}
 .pill{display:inline-block;border:1px solid var(--hbr-line);background:rgba(140,100,40,.08);color:var(--hbr-gold);font-weight:700;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;padding:7px 14px;border-radius:100px;font-family:'Inter',sans-serif}
 .top h1{font-size:clamp(28px,5vw,38px);margin:18px 0 10px;text-wrap:balance}
 .top h1 em{display:block;font-style:italic;background:var(--hbr-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -124,11 +140,11 @@ p{margin:0}
 }
 .closing-card .tag.is-complete-tag{color:var(--hbr-gold2)}
 .closing-sparkle{
-  display:inline-block;margin-bottom:12px;font-size:26px;
+  display:block;height:0;margin-bottom:0;font-size:26px;line-height:1;overflow:visible;
   opacity:0;transform:scale(.6);
-  transition:opacity .5s ease,transform .5s cubic-bezier(.2,1.4,.4,1);
+  transition:opacity .5s ease,transform .5s cubic-bezier(.2,1.4,.4,1),height .35s ease,margin-bottom .35s ease;
 }
-.closing-card.is-complete .closing-sparkle{opacity:1;transform:scale(1)}
+.closing-card.is-complete .closing-sparkle{height:26px;margin-bottom:12px;opacity:1;transform:scale(1)}
 
 .unit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
 .unit-tag{font-family:'Inter',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--hbr-gold)}
@@ -247,6 +263,10 @@ p{margin:0}
 </div>
 
 <div class="wrap">
+
+  <div class="hero-image reveal">
+    <img src="bsc-00-hero.png" alt="An open antique atlas, lit by candlelight, showing a hand-inked map of the ancient Near East and Mediterranean">
+  </div>
 
   <div class="top reveal">
     <span class="pill">✦ Scripture Mapped ✦</span>
@@ -474,7 +494,7 @@ p{margin:0}
   </div>
 
   <div class="closing-card reveal" id="closing-card">
-    <span class="closing-sparkle" aria-hidden="true">✦</span><br>
+    <span class="closing-sparkle" aria-hidden="true">✦</span>
     <span class="tag" id="closing-tag">Keep Going</span>
     <h2 id="closing-heading">Walking the whole road</h2>
     <p id="closing-text">From the rivers of Eden to a shipwreck off Malta — that's the whole sweep of the story. Come back to any section whenever you want; everything you've written is still here, waiting for you.</p>

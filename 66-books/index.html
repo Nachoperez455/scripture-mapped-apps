@@ -45,6 +45,27 @@ img{display:block;max-width:100%}
 .top h1 em{display:block;font-style:italic;background:var(--hbr-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
 .top .sub{font-size:14.5px;color:var(--hbr-soft);max-width:38ch;margin:0 auto}
 
+/* ---------- hero ---------- */
+.hero-frame{position:relative;max-width:600px;margin:18px auto 0;padding:0 16px}
+.hero-frame .hero-img-wrap{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--hbr-line);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.hero-frame img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-frame .hero-img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,11,8,0) 55%,rgba(14,11,8,.85) 100%)}
+
+/* ---------- how-to strip ---------- */
+.howto{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;max-width:600px;margin:16px auto 0;padding:0 16px}
+.howto-chip{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:100px;background:rgba(245,197,66,.05);
+  border:1px solid var(--hbr-line);font-size:12px;color:var(--hbr-soft);line-height:1}
+.howto-chip b{color:var(--hbr-gold2);font-weight:700}
+
+/* ---------- category banner ---------- */
+.category-banner{display:none;align-items:center;gap:14px;max-width:600px;margin:14px auto 0;padding:14px 18px;
+  border-radius:14px;background:linear-gradient(135deg,rgba(245,197,66,.1),rgba(245,197,66,.02));border:1px solid var(--hbr-line)}
+.category-banner.show{display:flex}
+.category-banner img{width:48px;height:48px;object-fit:contain;flex:none}
+.category-banner .cb-text{min-width:0}
+.category-banner h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--hbr-cream)}
+.category-banner p{font-size:12.5px;color:var(--hbr-soft);margin-top:3px;line-height:1.4}
+
 /* ---------- progress tracker ---------- */
 .progress-card{
   max-width:600px;margin:20px auto 0;padding:14px 18px;
@@ -156,6 +177,18 @@ mark{background:var(--hbr-foil);color:#1A1208;border-radius:3px;padding:0 1px}
     <p class="sub">Search or filter the whole Bible. Tap any book to open it. No app, no login, nothing to install.</p>
   </div>
 
+  <div class="hero-frame">
+    <div class="hero-img-wrap">
+      <img src="66b-hero-library.jpg" alt="An illustrated ancient library of scrolls and books, glowing with warm candlelight">
+    </div>
+  </div>
+
+  <div class="howto">
+    <span class="howto-chip">🔍 <b>Search</b>&nbsp;a word or story</span>
+    <span class="howto-chip">🏷️ <b>Filter</b>&nbsp;by testament or category</span>
+    <span class="howto-chip">👆 <b>Tap</b>&nbsp;any book to read about it</span>
+  </div>
+
   <div class="progress-card" id="progress-card">
     <div class="progress-ring-wrap">
       <svg viewBox="0 0 40 40">
@@ -188,6 +221,14 @@ mark{background:var(--hbr-foil);color:#1A1208;border-radius:3px;padding:0 1px}
       <div class="chips" id="category-chips"></div>
     </div>
     <button type="button" class="clear-btn" id="clear-btn">✕ Clear all filters</button>
+  </div>
+
+  <div class="category-banner" id="category-banner">
+    <img id="category-banner-icon" src="" alt="">
+    <div class="cb-text">
+      <h3 id="category-banner-title"></h3>
+      <p id="category-banner-desc"></p>
+    </div>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -301,6 +342,18 @@ const CATEGORY_ICON = {
   "Major Prophets":"icon-major-prophets.png","Minor Prophets":"icon-minor-prophets.png",
   "Gospels":"icon-gospels.png","Acts":"icon-acts.png","Pauline Epistles":"icon-pauline-epistles.png",
   "General Epistles":"icon-general-epistles.png","Apocalyptic":"icon-apocalyptic.png"
+};
+const CATEGORY_DESC = {
+  "Law":"The five books of Moses — Israel's founding story and its core laws.",
+  "History":"Israel's national story, from entering the promised land to exile and return.",
+  "Wisdom":"Poetry and reflection on suffering, meaning, love and everyday living.",
+  "Major Prophets":"Four long prophetic books warning of judgment and promising future hope.",
+  "Minor Prophets":"Twelve shorter prophetic books, each confronting a specific moment in Israel's story.",
+  "Gospels":"Four accounts of the life, death and resurrection of Jesus.",
+  "Acts":"The early church's growth from Jerusalem outward, driven by Peter and Paul.",
+  "Pauline Epistles":"Thirteen letters from Paul to churches and individuals he knew.",
+  "General Epistles":"Eight letters from other apostles to the wider church.",
+  "Apocalyptic":"One book of visions about the ultimate triumph of God over evil."
 };
 
 // ---------- STATE ----------
@@ -445,8 +498,25 @@ const grid = document.getElementById("grid");
 const emptyEl = document.getElementById("empty");
 const countEl = document.getElementById("count");
 
+const categoryBanner = document.getElementById("category-banner");
+const categoryBannerIcon = document.getElementById("category-banner-icon");
+const categoryBannerTitle = document.getElementById("category-banner-title");
+const categoryBannerDesc = document.getElementById("category-banner-desc");
+
+function updateCategoryBanner(){
+  if(activeCategory && !query){
+    categoryBannerIcon.src = CATEGORY_ICON[activeCategory];
+    categoryBannerTitle.textContent = CATEGORY_LABEL[activeCategory];
+    categoryBannerDesc.textContent = CATEGORY_DESC[activeCategory] || "";
+    categoryBanner.classList.add("show");
+  } else {
+    categoryBanner.classList.remove("show");
+  }
+}
+
 function render(){
   updateChipStates();
+  updateCategoryBanner();
   const results = getResults();
   countEl.textContent = results.length;
 
