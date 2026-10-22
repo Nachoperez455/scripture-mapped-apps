@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teach It — Classroom &amp; Presentation Pack · Scripture Mapped</title>
+<meta name="theme-color" content="#0E0B08">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Teach It">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIlRlYWNoIEl0IC0gQ2xhc3Nyb29tICYgUHJlc2VudGF0aW9uIFBhY2siLCAic2hvcnRfbmFtZSI6ICJUZWFjaCBJdCIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAic3RhcnRfdXJsIjogIi4iLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMEUwQjA4IiwgInRoZW1lX2NvbG9yIjogIiMwRTBCMDgifQ==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hbr-bg:#0E0B08;
+  --hbr-line:rgba(245,197,66,.28);
+  --hbr-gold:#F5C542;
+  --hbr-gold2:#FFE08A;
+  --hbr-goldd:#8C6A2A;
+  --hbr-cream:#F4ECD6;
+  --hbr-soft:#A69884;
+  --hbr-ember:#C94A2C;
+  --hbr-ok:#5BBF83;
+  --hbr-foil:linear-gradient(135deg,#8C6A2A 0%,#F5C542 22%,#FFE9A8 42%,#E1B84A 60%,#8C6A2A 80%,#F5C542 100%);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--hbr-cream);
+  background:radial-gradient(130% 55% at 50% 0%,#211810 0%,var(--hbr-bg) 62%);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;color:var(--hbr-cream);margin:0;line-height:1.15;letter-spacing:0}
+p{margin:0}
+img{display:block;max-width:100%;height:auto}
+button{font-family:inherit}
+
+/* ---------- header / top bar ---------- */
+.top{padding:28px 18px 0;text-align:center;max-width:720px;margin:0 auto}
+.pill{display:inline-block;border:1px solid var(--hbr-line);background:rgba(245,197,66,.07);color:var(--hbr-gold);font-weight:700;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;padding:7px 14px;border-radius:100px;font-family:'Inter',sans-serif}
+.top h1{font-size:clamp(24px,5vw,34px);margin:16px 0 8px;text-wrap:balance}
+.top h1 em{display:block;font-style:italic;background:var(--hbr-foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top .sub{font-size:14.5px;color:var(--hbr-soft);max-width:48ch;margin:0 auto}
+
+/* ---------- mode switcher (sticky, touch-friendly) ---------- */
+.modebar{
+  position:sticky;top:0;z-index:20;
+  margin-top:22px;
+  padding:10px 18px calc(10px + env(safe-area-inset-bottom)*0);
+  background:rgba(14,11,8,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--hbr-line);
+}
+.modebar-inner{max-width:720px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.mode-btn{
+  min-height:44px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 8px;
+  border-radius:11px;
+  border:1px solid var(--hbr-line);
+  background:rgba(245,197,66,.05);
+  color:var(--hbr-soft);
+  font-size:12.5px;font-weight:700;letter-spacing:.03em;
+  cursor:pointer;
+  text-align:center;
+  transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+.mode-btn.active{background:var(--hbr-foil);color:#1A1208;border-color:transparent}
+.mode-btn span.ico{font-size:14px}
+
+.wrap{max-width:720px;margin:0 auto;padding:22px 16px calc(60px + env(safe-area-inset-bottom))}
+.wrap.wide{max-width:900px}
+.view{display:none}
+.view.active{display:block}
+
+/* ---------- shared card chrome ---------- */
+.card{
+  margin:0 0 18px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#1E1710,#120E0A);
+  border:1px solid var(--hbr-line);
+  box-shadow:0 26px 50px -22px rgba(0,0,0,.85);
+  overflow:hidden;
+}
+.tag{display:inline-block;color:var(--hbr-gold);font-weight:700;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+
+/* ---------- MODE 1: wall maps ---------- */
+.map-card .map-head{padding:18px 20px 0}
+.map-card h3{font-size:clamp(19px,3.4vw,24px)}
+.map-card .kicker{font-size:13px;color:var(--hbr-soft);margin-top:4px;display:block}
+.map-card .map-img-wrap{margin:14px 16px 0;border-radius:14px;overflow:hidden;border:1px solid var(--hbr-line);background:#000}
+.map-card .map-img-wrap img{width:100%}
+.map-card .map-foot{padding:14px 20px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.save-btn{
+  min-height:48px;flex:1;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 18px;
+  border-radius:11px;border:0;
+  background:var(--hbr-foil);color:#1A1208;
+  font-size:14.5px;font-weight:700;letter-spacing:.02em;
+  cursor:pointer;text-decoration:none;
+  box-shadow:0 14px 28px -14px rgba(245,197,66,.55);
+  transition:transform .15s ease,box-shadow .2s ease;
+}
+.save-btn:hover{transform:translateY(-1px);box-shadow:0 18px 32px -14px rgba(245,197,66,.7)}
+.save-btn:active{transform:translateY(1px)}
+.print-btn{
+  min-height:40px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;
+  border-radius:9px;
+  border:1px solid var(--hbr-line);
+  background:transparent;
+  color:var(--hbr-soft);
+  font-size:12px;font-weight:600;letter-spacing:.02em;
+  cursor:pointer;
+  transition:color .2s ease,border-color .2s ease;
+}
+.print-btn:hover{color:var(--hbr-gold2);border-color:var(--hbr-gold)}
+.print-all{
+  display:block;width:100%;margin:4px 0 10px;min-height:48px;
+  border-radius:12px;border:0;
+  background:var(--hbr-foil);color:#1A1208;font-weight:700;font-size:15px;letter-spacing:.03em;
+  cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease;
+}
+.print-all:hover{transform:translateY(-1px)}
+.save-all{
+  display:block;width:100%;margin:4px 0 10px;min-height:50px;
+  border-radius:12px;border:0;
+  background:var(--hbr-foil);color:#1A1208;font-weight:700;font-size:15px;letter-spacing:.03em;
+  cursor:pointer;text-align:center;
+  box-shadow:0 16px 32px -16px rgba(245,197,66,.6);
+  transition:transform .15s ease,box-shadow .2s ease;
+}
+.save-all:hover{transform:translateY(-1px);box-shadow:0 20px 36px -16px rgba(245,197,66,.75)}
+.save-all:active{transform:translateY(1px)}
+.print-note{text-align:center;font-size:11.5px;color:var(--hbr-soft);margin:0 0 18px;letter-spacing:.02em}
+
+/* ---------- MODE 2: slide deck ---------- */
+.deck-stage{
+  position:relative;
+  border-radius:18px;overflow:hidden;
+  background:#000;border:1px solid var(--hbr-line);
+  box-shadow:0 26px 60px -22px rgba(0,0,0,.9);
+  aspect-ratio:4/5;
+  max-height:72vh;
+  margin:0 auto;
+  max-width:560px;
+}
+.deck-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s ease}
+.deck-stage img.show{opacity:1}
+.deck-caption{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:30px 22px 20px;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.92) 70%);
+  text-align:center;
+}
+.deck-caption .deck-num{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--hbr-gold);margin-bottom:8px;display:block}
+.deck-caption h2{font-size:clamp(22px,5vw,30px);color:#fff;text-wrap:balance}
+.deck-caption .deck-kicker{font-size:14px;color:#D9CDB4;margin-top:6px;display:block}
+.deck-nav{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  margin:18px auto 0;max-width:560px;
+}
+.deck-arrow{
+  min-width:48px;min-height:48px;
+  border-radius:50%;border:1px solid var(--hbr-line);
+  background:rgba(245,197,66,.07);color:var(--hbr-gold);
+  font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.deck-arrow:disabled{opacity:.3;cursor:default}
+.deck-counter{font-size:14px;color:var(--hbr-soft);min-width:64px;text-align:center;font-weight:600}
+.deck-hint{text-align:center;font-size:12px;color:var(--hbr-soft);margin-top:14px;letter-spacing:.03em}
+.deck-dots{display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+.deck-dot{width:9px;height:9px;border-radius:50%;background:rgba(245,197,66,.25);border:1px solid var(--hbr-line);cursor:pointer}
+.deck-dot.on{background:var(--hbr-gold)}
+
+/* ---------- MODE 3: lesson guides ---------- */
+.lesson-jump{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.jump-chip{
+  min-height:38px;
+  display:inline-flex;align-items:center;
+  padding:8px 13px;border-radius:100px;
+  border:1px solid var(--hbr-line);
+  background:rgba(245,197,66,.06);
+  color:var(--hbr-soft);font-size:12.5px;font-weight:600;
+  text-decoration:none;cursor:pointer;
+}
+.lesson-card{padding:22px 20px 24px}
+.lesson-card h3{font-size:clamp(19px,3.6vw,23px)}
+.lesson-card .kicker{font-size:13px;color:var(--hbr-soft);margin:4px 0 16px;display:block}
+.lesson-block{margin-top:14px;padding:14px 16px;border-radius:12px;background:rgba(245,197,66,.045);border:1px solid var(--hbr-line)}
+.lesson-block .lb-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.lesson-block .lb-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--hbr-gold);font-weight:700}
+.lesson-block .lb-time{font-size:11.5px;color:var(--hbr-soft);font-weight:600}
+.lesson-block p{font-size:14.5px;line-height:1.6;color:#E6DCC6}
+.lesson-block p+p{margin-top:8px}
+.lesson-block ul{margin:8px 0 0;padding-left:0;list-style:none;display:grid;gap:7px}
+.lesson-block li{display:grid;grid-template-columns:20px 1fr;gap:9px;font-size:14px;line-height:1.5;color:#E6DCC6}
+.lesson-block li::before{content:"✦";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--hbr-line);color:var(--hbr-gold);font-size:9px}
+.lesson-block.closing p,.lesson-block.closing li{color:var(--hbr-gold2)}
+
+/* ---------- print ---------- */
+@media print{
+  .modebar, .print-btn, .print-all, .save-btn, .save-all, .print-note, .top, .deck-nav, .deck-hint, .deck-dots, .lesson-jump{display:none !important}
+  body{background:#fff !important}
+  .view{display:none !important}
+  .view.print-active{display:block !important}
+  .wrap{max-width:100% !important;padding:0 !important}
+  .card{box-shadow:none !important;border:none !important;border-radius:0 !important;margin:0 !important;background:#fff !important}
+  .map-card{page-break-after:always;break-after:page;height:100vh}
+  .map-card .map-head{padding:10mm 10mm 0;text-align:center}
+  .map-card h3{color:#1A1208 !important;font-size:26pt}
+  .map-card .kicker{color:#4a3f2d !important}
+  .map-card .map-img-wrap{margin:8mm auto 0;max-width:92%;border:none}
+  .map-card .map-foot{display:none !important}
+  body.single-print .map-card{display:none !important}
+  body.single-print .map-card.print-only{display:block !important;page-break-after:auto !important;break-after:auto !important}
+}
+
+@media (min-width:860px){
+  .wrap{max-width:900px}
+  .lesson-card{padding:30px 32px 32px}
+}
+
+/* ---------- motion: scroll reveal + interactive polish ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+.reveal-stagger .reveal:nth-child(2){transition-delay:.08s}
+.reveal-stagger .reveal:nth-child(3){transition-delay:.16s}
+.reveal-stagger .reveal:nth-child(4){transition-delay:.24s}
+.mode-btn{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .15s ease}
+.mode-btn:hover{border-color:var(--hbr-gold);color:var(--hbr-gold)}
+.mode-btn:active{transform:translateY(1px)}
+.jump-chip{transition:background .2s ease,border-color .2s ease,color .2s ease,transform .15s ease}
+.jump-chip:hover{border-color:var(--hbr-gold);color:var(--hbr-gold);transform:translateY(-1px)}
+.deck-dot{transition:transform .2s ease,background .2s ease}
+.deck-dot:hover{transform:scale(1.3)}
+.deck-arrow{transition:transform .15s ease,background .2s ease,border-color .2s ease}
+.deck-arrow:hover:not(:disabled){transform:translateY(-1px);border-color:var(--hbr-gold)}
+.map-card,.lesson-card{transition:transform .25s ease,box-shadow .25s ease}
+.map-card:hover,.lesson-card:hover{transform:translateY(-2px);box-shadow:0 30px 56px -24px rgba(0,0,0,.9)}
+.lesson-block{transition:background .2s ease,border-color .2s ease}
+.lesson-block:hover{background:rgba(245,197,66,.08)}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<div class="top reveal">
+  <span class="pill">✦ Classroom &amp; Presentation Pack ✦</span>
+  <h1>Teach It <em>in ten minutes</em></h1>
+  <p class="sub">The nine key scenes of your atlas, ready to pin up, project, and teach — no prep required.</p>
+</div>
+
+<div class="modebar">
+  <div class="modebar-inner">
+    <button class="mode-btn active" data-mode="maps"><span class="ico">🗺️</span> Wall Maps</button>
+    <button class="mode-btn" data-mode="deck"><span class="ico">📽️</span> Slide Deck</button>
+    <button class="mode-btn" data-mode="lesson"><span class="ico">📖</span> Lesson Guides</button>
+  </div>
+</div>
+
+<!-- ================= MODE 1: WALL MAPS ================= -->
+<div class="view active" id="view-maps">
+  <div class="wrap" id="wrap-maps">
+    <button class="save-all" id="save-all-btn">⬇ Save all 9 images to your device</button>
+    <button class="print-all" id="print-all-btn" style="background:transparent;border:1px solid var(--hbr-line);color:var(--hbr-soft);font-size:12.5px;min-height:40px;box-shadow:none">🖨️ Print all (desktop)</button>
+    <p class="print-note">Saving works on phone and desktop. Printing needs a printer connected to this device.</p>
+    <div id="maps-list" class="reveal-stagger"></div>
+  </div>
+</div>
+
+<!-- ================= MODE 2: SLIDE DECK ================= -->
+<div class="view" id="view-deck">
+  <div class="wrap">
+    <div class="deck-stage" id="deck-stage"></div>
+    <div class="deck-nav">
+      <button class="deck-arrow" id="deck-prev" aria-label="Previous slide">‹</button>
+      <span class="deck-counter" id="deck-counter">1 / 9</span>
+      <button class="deck-arrow" id="deck-next" aria-label="Next slide">›</button>
+    </div>
+    <div class="deck-dots" id="deck-dots"></div>
+    <p class="deck-hint">Use the arrow keys, swipe, or the buttons above to advance while projecting.</p>
+  </div>
+</div>
+
+<!-- ================= MODE 3: LESSON GUIDES ================= -->
+<div class="view" id="view-lesson">
+  <div class="wrap wide">
+    <div class="lesson-jump" id="lesson-jump"></div>
+    <div id="lesson-list" class="reveal-stagger"></div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// The nine real atlas sections (same structure used across the
+// Scripture Mapped product), each paired with its real atlas scene
+// image already uploaded to the store.
+// ---------------------------------------------------------------
+const SECTIONS = [
+  {
+    num: 1,
+    title: "Beginnings",
+    kicker: "A World Before Fixed Borders — Genesis 1–11",
+    img: "ti-01-flood.webp",
+    lesson: {
+      hook: "If you could only save one pair of every animal on earth, how would you even start deciding? (Let two or three answer — there's no wrong answer, it's just to get them imagining the scale of the problem.)",
+      core: [
+        "Point at the map: Eden's region, the mountains of Ararat, and the cities of Mesopotamia including Babel — all in the same stretch of land between two rivers.",
+        "Walk through the shape of the story, not just the plot: a garden with four rivers, a flood that erases almost everything, and a scattered people building a tower to make a name for themselves instead of trusting the one who already named them.",
+        "The map detail worth pointing out: there are no fixed national borders yet. Everyone in this section is still one extended family, spreading out across one region — the borders show up later, starting next section.",
+        "Key thread to land: this opening section isn't really about geography yet — it's about a pattern that repeats through the whole Bible: things get made good, people reach for more than they were given, and the story doesn't end there."
+      ],
+      closing: "Why do you think the Bible's history starts with a story about scattering, instead of a story about gathering? What does that tell us about what comes next?"
+    }
+  },
+  {
+    num: 2,
+    title: "Patriarchs",
+    kicker: "Journeys, Wells and Promises — Genesis 12–50",
+    img: "ti-02-abraham.webp",
+    lesson: {
+      hook: "Would you leave your home city forever, with no address for where you were going, on nothing but a promise?",
+      core: [
+        "Trace the route on the map with your finger as you talk: Ur, up to Haran, down into Canaan, and eventually all the way to Egypt during a famine.",
+        "This section covers four generations — Abraham, Isaac, Jacob, Joseph — and the map is really one long migration story, not four separate ones. Every generation moves again.",
+        "Call out the recurring details that tie the family together across the map: wells (where major meetings and marriages happen), a repeated promise about land and descendants that keeps getting passed down, and famine as the thing that eventually pushes the family into Egypt.",
+        "Land this: the promise is made to a family that spends most of its time NOT living in the land it was promised. That tension — promised but not yet possessing — is the engine of the whole section."
+      ],
+      closing: "What's a promise in your own life that you're still waiting on, the way this family waited on theirs for generations?"
+    }
+  },
+  {
+    num: 3,
+    title: "Exodus",
+    kicker: "Leaving Egypt — Exodus 1–18",
+    img: "ti-03-sea.webp",
+    lesson: {
+      hook: "What would it actually take to convince you to leave the only home you've ever known, overnight, with no map for where you're headed?",
+      core: [
+        "Show the map's three pieces: the Nile Delta where the people had lived for generations, the Sinai Peninsula they cross into, and the uncertain route toward Mount Sinai — notice the dashed line on the map, because scholars genuinely aren't sure of the exact path.",
+        "The core event is the crossing of the sea — a sea that, geographically, should not have been crossable on foot. Spend real time here: this is the hinge of the whole section.",
+        "After the crossing, the story shifts from one dramatic escape to a slower lesson: a whole generation learning to depend day by day on provision (food, water) they don't control. That shift from rescue to ongoing dependence is easy to skip past, but it's the point of the wilderness stretch.",
+        "Tie it to the map: notice how much of this section's \"geography\" is uncertain or wilderness, not cities. That's deliberate — it's a story about being in-between, not about arriving yet."
+      ],
+      closing: "What does it look like, practically, to depend on provision you don't control — and why is that harder than depending on provision you do control?"
+    }
+  },
+  {
+    num: 4,
+    title: "Settlement and Judges",
+    kicker: "Joshua & Judges — Entering and Holding the Land",
+    img: "ti-04-jericho.webp",
+    lesson: {
+      hook: "Which is harder, do you think: getting into a new place, or learning to actually live well once you're there?",
+      core: [
+        "Point to the Jordan crossing point on the map, then to Jericho, Ai, Gibeon and Hazor — this is a wandering generation finally crossing into a land that is already full of walled cities and rival peoples. It is not empty land.",
+        "The tribal boundaries sketched on the map matter: the land gets divided among the tribes, but — and this is the honest part of the story — the taking and holding of that land happens unevenly. Some tribes succeed quickly, others never fully settle their territory.",
+        "That unevenness sets up the whole Judges period: without a king, without unified leadership, the pattern becomes a cycle — the people drift, trouble comes, a judge rises to deliver them, things settle, and it starts again.",
+        "Name the cycle out loud for the group: drift, trouble, deliverance, peace, drift again. It repeats roughly a dozen times in this one book."
+      ],
+      closing: "Where do you recognize that same cycle — drift, trouble, rescue, repeat — in your own life or in the life of your group?"
+    }
+  },
+  {
+    num: 5,
+    title: "Kingdoms",
+    kicker: "Power, Worship and Division — 1 Samuel to 1 Kings",
+    img: "ti-05-elah.webp",
+    lesson: {
+      hook: "What's the biggest 'giant' you've personally faced that looked completely unbeatable going in?",
+      core: [
+        "This map's centerpiece is the Valley of Elah — point at it directly. This is the actual physical place where a shepherd boy faced a giant, and it is barely a day's walk from where he was tending sheep.",
+        "From there, trace the bigger arc: that shepherd becomes king, a small hill town (Jerusalem) becomes the capital of a unified kingdom, and a temple gets built there under his son.",
+        "Then the turn: that same unified kingdom splits in two — Israel in the north, Judah in the south — under the weight of its own success and the next generation's mistakes. Point to both halves on the map.",
+        "This is the clearest map lesson in the whole atlas: political unity is fragile. A kingdom can go from one shepherd's victory to a divided nation within about three generations."
+      ],
+      closing: "What does success tend to do to unity — in a family, a team, or a group like this one?"
+    }
+  },
+  {
+    num: 6,
+    title: "Exile and Return",
+    kicker: "Two Empires, One Remnant — 2 Kings to Ezra-Nehemiah",
+    img: "ti-06-babylon.webp",
+    lesson: {
+      hook: "Could your community survive losing everything — land, leaders, place of worship — and still come back from it generations later?",
+      core: [
+        "Point to Samaria first: the northern kingdom falls to Assyria. Then point to Lachish and Jerusalem: a century and a half later, the southern kingdom falls to a second empire, Babylon. Two separate empires, two separate falls.",
+        "Follow the deportation route lines on the map east toward Babylon — this is where the exiles end up, 'by the rivers of Babylon,' grieving a homeland they can no longer reach.",
+        "Then follow the return route, west again, back toward Jerusalem — this happens under a THIRD empire, Persia, whose king issues the decree that allows the remnant to go home and rebuild.",
+        "Underline the surprise of the story: nothing about this ending was expected. Independent kingdoms do not usually get their capital and their religious center back after this long. The map is tracing an against-the-odds reversal, not just a disaster."
+      ],
+      closing: "What's something that felt like a complete ending in your own story, that later turned out not to be the end after all?"
+    }
+  },
+  {
+    num: 7,
+    title: "Jesus",
+    kicker: "Galilee to Jerusalem — The Gospels",
+    img: "ti-07-capernaum.webp",
+    lesson: {
+      hook: "Why would you start a movement meant to change an entire empire in a quiet backwater region, instead of the capital city?",
+      core: [
+        "Point to Nazareth and Capernaum in the north on the map — this is where most of the ministry actually happens: a childhood in the hill country of Galilee, and years of ministry built around a lake, based out of Capernaum.",
+        "Then trace the road south, through the Jordan valley, all the way down to Jerusalem — and note the detail on the map: this climb gains roughly three thousand feet in elevation. It is a real, physically demanding journey, not a short trip.",
+        "Make the geography do the storytelling: almost the entire ministry happens far from the center of religious and political power, and only the final chapter moves toward that center — deliberately, and on a road that climbs the whole way.",
+        "Land the point: the map shows a ministry that starts on the margins and ends at the capital on purpose, not by accident."
+      ],
+      closing: "What does the geography of where this ministry happened tell you about who it was for, first?"
+    }
+  },
+  {
+    num: 8,
+    title: "Early Church",
+    kicker: "Jerusalem Outward — Acts 1–12",
+    img: "ti-08-pentecost.webp",
+    lesson: {
+      hook: "What would it take for this group to fully welcome someone completely different from everyone else here — overnight, not gradually?",
+      core: [
+        "Start at the center of the map: Jerusalem, where a small group becomes a movement almost instantly, in front of a crowd of pilgrims from many visibly different cultures and languages, all gathered in one place.",
+        "Then trace the spreading lines outward: to Samaria next (crossing a cultural boundary that mattered enormously at the time), along the Gaza road, to Caesarea, and up to Antioch.",
+        "Each line on the map is a boundary being crossed — cultural, geographic, and religious — and each one happens faster than expected. This whole spread happens within a single generation.",
+        "Name the real turning point for the group: this section is the hinge between a story that was mostly about one people in one place, and a story that becomes about every people in every place."
+      ],
+      closing: "What boundary — cultural, relational, or otherwise — is your own community still hesitant to cross?"
+    }
+  },
+  {
+    num: 9,
+    title: "Paul",
+    kicker: "Roads, Ports and Communities — Acts 13–28",
+    img: "ti-09-damascus.webp",
+    lesson: {
+      hook: "Would you keep going toward a goal if you knew the price of finishing it was literally being put in chains?",
+      core: [
+        "Point to Antioch as the starting hub, then trace the looping route lines across the eastern Mediterranean: Cyprus, through Asia Minor, across to Greece, through Ephesus, and finally to Rome.",
+        "These lines represent three separate missionary journeys plus a final voyage — by road and by sea — carrying one message from a regional crossroads city to the center of the empire itself.",
+        "Point out the pattern behind the travel, not just the travel itself: this isn't aimless movement. Each stop becomes a community that keeps going after the traveler leaves — the goal was never just the journey, it was what got planted along the way.",
+        "Land the ending: the final leg of the route is made in chains, as a prisoner headed to trial in Rome. The map's most important line is also its hardest one."
+      ],
+      closing: "What's a goal in your own life you'd keep pursuing even if the path to it got harder instead of easier?"
+    }
+  }
+];
+
+// ---------------------------------------------------------------
+// Save-to-device via the platform's `downloads` capability.
+// A plain <a download> link does nothing inside the artifact
+// viewer, so every save goes through claude.use("downloads").
+// ---------------------------------------------------------------
+function filenameFor(s){
+  return `teachit-wall-map-${String(s.num).padStart(2,'0')}-${s.title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.webp`;
+}
+async function getDownloads(){
+  try{
+    if (window.claude && typeof window.claude.use === 'function') {
+      return await window.claude.use('downloads');
+    }
+  }catch(e){ /* fall through to null */ }
+  return null;
+}
+async function saveImage(src, filename, btn){
+  const downloads = await getDownloads();
+  const originalLabel = btn ? btn.textContent : null;
+  if (!downloads) {
+    // No downloads capability in this view — open the image so the
+    // viewer can save it manually (long-press / right-click save).
+    window.open(src, '_blank');
+    return;
+  }
+  try {
+    if (btn) btn.textContent = '…';
+    const resp = await fetch(src);
+    const blob = await resp.blob();
+    const result = await downloads.save({ filename, data: blob });
+    if (btn) { btn.textContent = result.status === 'saved' ? '✓ Saved' : '✓ Sent'; setTimeout(() => { btn.textContent = originalLabel; }, 1600); }
+  } catch (err) {
+    if (btn) { btn.textContent = err && err.code === 'declined' ? 'Cancelled' : 'Try again'; setTimeout(() => { btn.textContent = originalLabel; }, 1600); }
+  }
+}
+
+// ---------------------------------------------------------------
+// MODE 1: Wall Maps — render print-ready full cards
+// ---------------------------------------------------------------
+const mapsList = document.getElementById('maps-list');
+SECTIONS.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'card map-card reveal';
+  card.innerHTML = `
+    <div class="map-head">
+      <span class="tag">✦ Section ${s.num} of 9 ✦</span>
+      <h3>${s.title}</h3>
+      <span class="kicker">${s.kicker}</span>
+    </div>
+    <div class="map-img-wrap"><img src="${s.img}" alt="${s.title} wall map" loading="lazy"></div>
+    <div class="map-foot">
+      <button type="button" class="save-btn" data-save="single" data-img="${s.img}" data-name="${filenameFor(s)}">⬇ Save Image</button>
+      <button class="print-btn" data-print="single">Print (desktop)</button>
+    </div>`;
+  mapsList.appendChild(card);
+});
+document.getElementById('print-all-btn').addEventListener('click', () => window.print());
+document.getElementById('save-all-btn').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  const originalLabel = btn.textContent;
+  for (let i = 0; i < SECTIONS.length; i++) {
+    const s = SECTIONS[i];
+    btn.textContent = `⬇ Saving ${i + 1} / ${SECTIONS.length}…`;
+    await saveImage(s.img, filenameFor(s), null);
+  }
+  btn.textContent = '✓ All 9 sent to your device';
+  setTimeout(() => { btn.textContent = originalLabel; }, 2200);
+});
+mapsList.addEventListener('click', e => {
+  const saveBtn = e.target.closest('[data-save="single"]');
+  if (saveBtn) {
+    saveImage(saveBtn.dataset.img, saveBtn.dataset.name, saveBtn);
+    return;
+  }
+  const btn = e.target.closest('[data-print="single"]');
+  if (!btn) return;
+  const card = btn.closest('.map-card');
+  card.classList.add('print-only');
+  document.body.classList.add('single-print');
+  window.print();
+});
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('single-print');
+  mapsList.querySelectorAll('.map-card.print-only').forEach(c => c.classList.remove('print-only'));
+});
+
+// ---------------------------------------------------------------
+// MODE 2: Slide Deck
+// ---------------------------------------------------------------
+const stage = document.getElementById('deck-stage');
+const counter = document.getElementById('deck-counter');
+const dotsWrap = document.getElementById('deck-dots');
+let slideIdx = 0;
+
+SECTIONS.forEach((s, i) => {
+  const img = document.createElement('img');
+  img.src = s.img;
+  img.alt = s.title;
+  img.dataset.i = i;
+  stage.appendChild(img);
+});
+const caption = document.createElement('div');
+caption.className = 'deck-caption';
+stage.appendChild(caption);
+
+SECTIONS.forEach((s, i) => {
+  const dot = document.createElement('span');
+  dot.className = 'deck-dot';
+  dot.dataset.i = i;
+  dotsWrap.appendChild(dot);
+});
+
+function renderSlide(){
+  const s = SECTIONS[slideIdx];
+  stage.querySelectorAll('img').forEach(img => {
+    img.classList.toggle('show', Number(img.dataset.i) === slideIdx);
+  });
+  caption.innerHTML = `
+    <span class="deck-num">Section ${s.num} of ${SECTIONS.length}</span>
+    <h2>${s.title}</h2>
+    <span class="deck-kicker">${s.kicker}</span>`;
+  counter.textContent = `${slideIdx + 1} / ${SECTIONS.length}`;
+  dotsWrap.querySelectorAll('.deck-dot').forEach(d => {
+    d.classList.toggle('on', Number(d.dataset.i) === slideIdx);
+  });
+  document.getElementById('deck-prev').disabled = slideIdx === 0;
+  document.getElementById('deck-next').disabled = slideIdx === SECTIONS.length - 1;
+}
+function goSlide(i){
+  slideIdx = Math.max(0, Math.min(SECTIONS.length - 1, i));
+  renderSlide();
+}
+document.getElementById('deck-prev').addEventListener('click', () => goSlide(slideIdx - 1));
+document.getElementById('deck-next').addEventListener('click', () => goSlide(slideIdx + 1));
+dotsWrap.addEventListener('click', e => {
+  const dot = e.target.closest('.deck-dot');
+  if (dot) goSlide(Number(dot.dataset.i));
+});
+renderSlide();
+
+// keyboard navigation — for when it's actually being projected
+document.addEventListener('keydown', e => {
+  if (document.getElementById('view-deck').classList.contains('active')) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goSlide(slideIdx + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goSlide(slideIdx - 1); }
+  }
+});
+
+// basic swipe support
+let touchStartX = null;
+stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+stage.addEventListener('touchend', e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) goSlide(slideIdx + (dx < 0 ? 1 : -1));
+  touchStartX = null;
+}, {passive:true});
+
+// ---------------------------------------------------------------
+// MODE 3: Lesson Guides
+// ---------------------------------------------------------------
+const jumpWrap = document.getElementById('lesson-jump');
+const lessonList = document.getElementById('lesson-list');
+SECTIONS.forEach(s => {
+  const chip = document.createElement('a');
+  chip.className = 'jump-chip';
+  chip.href = `#lesson-${s.num}`;
+  chip.textContent = `${s.num}. ${s.title}`;
+  jumpWrap.appendChild(chip);
+
+  const card = document.createElement('div');
+  card.className = 'card lesson-card reveal';
+  card.id = `lesson-${s.num}`;
+  card.innerHTML = `
+    <span class="tag">✦ Section ${s.num} of 9 · 10-Minute Lesson ✦</span>
+    <h3>${s.title}</h3>
+    <span class="kicker">${s.kicker}</span>
+    <div class="lesson-block opening">
+      <div class="lb-head"><span class="lb-label">Opening Hook</span><span class="lb-time">~1 min</span></div>
+      <p>${s.lesson.hook}</p>
+    </div>
+    <div class="lesson-block core">
+      <div class="lb-head"><span class="lb-label">Walk the Map</span><span class="lb-time">~6–7 min</span></div>
+      <ul>${s.lesson.core.map(line => `<li>${line}</li>`).join('')}</ul>
+    </div>
+    <div class="lesson-block closing">
+      <div class="lb-head"><span class="lb-label">Closing Question</span><span class="lb-time">~2 min</span></div>
+      <p>${s.lesson.closing}</p>
+    </div>`;
+  lessonList.appendChild(card);
+});
+
+// ---------------------------------------------------------------
+// Mode switcher
+// ---------------------------------------------------------------
+const modeBtns = document.querySelectorAll('.mode-btn');
+const views = { maps: document.getElementById('view-maps'), deck: document.getElementById('view-deck'), lesson: document.getElementById('view-lesson') };
+modeBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const mode = btn.dataset.mode;
+    modeBtns.forEach(b => b.classList.toggle('active', b === btn));
+    Object.keys(views).forEach(k => views[k].classList.toggle('active', k === mode));
+    Object.keys(views).forEach(k => views[k].classList.remove('print-active'));
+    views[mode].classList.add('print-active');
+  });
+});
+views.maps.classList.add('print-active');
+
+// ---------------------------------------------------------------
+// motion: scroll reveal (skipped for reduced-motion)
+// ---------------------------------------------------------------
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+if (reduceMotion) {
+  revealEls.forEach(el => el.classList.add('in-view'));
+} else if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => io.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('in-view'));
+}
+</script>
+</body>
+</html>
