@@ -483,30 +483,72 @@ const SECTIONS = [
 function filenameFor(s){
   return `teachit-wall-map-${String(s.num).padStart(2,'0')}-${s.title.toLowerCase().replace(/[^a-z0-9]+/g,'-')}.webp`;
 }
-async function saveAllAsZip(btn){
-  const originalLabel = btn.textContent;
-  try {
+
+// ---------------------------------------------------------------
+// Pre-build the zip in the background, well before anyone clicks.
+// Chrome (and other browsers) can silently drop a blob download
+// triggered via a.click() if too much async work (several awaited
+// fetches + zip compression) happened between the click and the
+// click() call — the "user activation" window the browser requires
+// for a file-save can run out mid-await, and the failure is SILENT:
+// no error, the code finishes fine, but nothing lands on disk. The
+// fix is to do all the slow async work (fetching the 9 images,
+// zipping them) ahead of time, idle, in the background, so that by
+// the time someone actually taps "Save all", the click handler only
+// has to do a.click() on an already-ready blob URL — effectively
+// zero delay between tap and download, same as a plain <a download>.
+// ---------------------------------------------------------------
+let zipReadyUrl = null;
+let zipPreparePromise = null;
+
+function prepareZip(onProgress){
+  if (zipPreparePromise) return zipPreparePromise;
+  zipPreparePromise = (async () => {
     const zip = new JSZip();
     for (let i = 0; i < SECTIONS.length; i++) {
       const s = SECTIONS[i];
-      btn.textContent = `⬇ Packing ${i + 1} / ${SECTIONS.length}…`;
+      if (onProgress) onProgress(i + 1, SECTIONS.length);
       const resp = await fetch(s.img);
       const blob = await resp.blob();
       zip.file(filenameFor(s), blob);
     }
-    btn.textContent = '⬇ Zipping…';
-    const zipBlob = await zip.generateAsync({ type: 'blob' });
-    const url = URL.createObjectURL(zipBlob);
+    const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+    zipReadyUrl = URL.createObjectURL(zipBlob);
+    return zipReadyUrl;
+  })();
+  return zipPreparePromise;
+}
+
+// Kick it off as soon as the browser is idle, so it's almost always
+// ready before a real visitor finishes reading and reaches for the
+// button.
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(() => prepareZip(), { timeout: 4000 });
+} else {
+  setTimeout(() => prepareZip(), 1200);
+}
+
+async function saveAllAsZip(btn){
+  const originalLabel = btn.textContent;
+  try {
+    let url = zipReadyUrl;
+    if (!url) {
+      // Rare case: someone taps within the first second or two, before
+      // the background prep finished. This fallback path still has the
+      // async-then-click risk described above, but it only applies to
+      // that narrow early window instead of every single click.
+      url = await prepareZip((done, total) => { btn.textContent = `⬇ Packing ${done} / ${total}…`; });
+    }
     const a = document.createElement('a');
     a.href = url;
     a.download = 'teachit-wall-maps-all-9.zip';
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 4000);
     btn.textContent = '✓ All 9 saved (zip)';
   } catch (err) {
     btn.textContent = 'Try again';
+    zipPreparePromise = null; // allow a retry to re-fetch on next click
   } finally {
     setTimeout(() => { btn.textContent = originalLabel; }, 2200);
   }
