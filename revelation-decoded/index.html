@@ -212,6 +212,20 @@ a{color:var(--hbr-gold)}
 /* ---------- New Jerusalem hero video ---------- */
 .njer-hero video{display:block;width:100%;height:auto}
 
+/* ---------- click-to-play video overlay ---------- */
+.video-frame{position:relative}
+.video-play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:64px;height:64px;border-radius:50%;border:1px solid rgba(245,197,66,.5);
+  background:var(--hbr-foil);box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 8px rgba(245,197,66,.1);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;
+}
+.video-play:hover{transform:translate(-50%,-50%) scale(1.08)}
+.video-play:active{transform:translate(-50%,-50%) scale(.96)}
+.video-play svg{width:22px;height:22px;margin-left:2px}
+.video-play.hidden{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.8)}
+
 /* ---------- church quiz ---------- */
 .quiz-wrap{margin-top:22px}
 .quiz-toggle{
@@ -345,11 +359,14 @@ a{color:var(--hbr-gold)}
       <p>Tap a church to read its own message, straight from the text: what it got right, what it was called to fix, and what was promised to it.</p>
     </div>
 
-    <div class="hero-frame reveal" style="margin-top:18px">
-      <video poster="rd-ephesus-scene.jpg" autoplay muted loop playsinline preload="metadata"
+    <div class="hero-frame reveal video-frame" style="margin-top:18px">
+      <video id="churchesVideo" poster="rd-ephesus-scene.jpg" playsinline preload="metadata"
         aria-label="An antique map of the seven churches of Asia, each marked with a small gold lamp glowing in turn">
         <source src="rd-seven-churches.mp4" type="video/mp4">
       </video>
+      <button type="button" class="video-play" id="churchesVideoPlay" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="#1A1208"><path d="M6 4.5v15l14-7.5z"/></svg>
+      </button>
     </div>
 
     <div class="map-shell">
@@ -497,11 +514,14 @@ a{color:var(--hbr-gold)}
     </div>
 
     <div class="njer-shell">
-      <div class="njer-hero">
-        <video id="njerImg" poster="rd-new-jerusalem.jpg" autoplay muted loop playsinline preload="metadata"
+      <div class="njer-hero video-frame">
+        <video id="njerImg" poster="rd-new-jerusalem.jpg" playsinline preload="metadata"
           aria-label="The New Jerusalem descending from heaven, a radiant walled city of gold and jewels, light pulsing from its towers">
           <source src="rd-new-jerusalem.mp4" type="video/mp4">
         </video>
+        <button type="button" class="video-play" id="njerVideoPlay" aria-label="Play video">
+          <svg viewBox="0 0 24 24" fill="#1A1208"><path d="M6 4.5v15l14-7.5z"/></svg>
+        </button>
       </div>
       <div class="njer-cube-wrap">
         <svg class="njer-cube" viewBox="0 0 200 180" aria-hidden="true">
@@ -789,13 +809,26 @@ a{color:var(--hbr-gold)}
     restartBtn.addEventListener('click', startQuiz);
   })();
 
+  /* ---- click-to-play videos (replayable: button reappears on pause/ended) ---- */
+  (function(){
+    function wireClickToPlay(videoId, buttonId){
+      var video = document.getElementById(videoId);
+      var btn = document.getElementById(buttonId);
+      if(!video || !btn) return;
+      btn.addEventListener('click', function(){
+        video.play();
+        btn.classList.add('hidden');
+      });
+      video.addEventListener('play', function(){ btn.classList.add('hidden'); });
+      video.addEventListener('pause', function(){ btn.classList.remove('hidden'); });
+      video.addEventListener('ended', function(){ btn.classList.remove('hidden'); });
+    }
+    wireClickToPlay('churchesVideo', 'churchesVideoPlay');
+    wireClickToPlay('njerImg', 'njerVideoPlay');
+  })();
+
   /* ---- motion: scroll reveal + hero parallax (skipped for reduced-motion) ---- */
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var njerVideo = document.getElementById('njerImg');
-  if(njerVideo && njerVideo.tagName === 'VIDEO' && reduceMotion){
-    njerVideo.removeAttribute('autoplay');
-    njerVideo.pause();
-  }
   var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
   if(reduceMotion){
     revealEls.forEach(function(el){ el.classList.add('in-view'); });

@@ -51,6 +51,19 @@ img{display:block;max-width:100%}
 .hero-frame img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
 .hero-frame .hero-img-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,11,8,0) 55%,rgba(14,11,8,.85) 100%)}
 
+/* ---------- click-to-play video overlay ---------- */
+.video-play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:64px;height:64px;border-radius:50%;border:1px solid rgba(245,197,66,.5);
+  background:var(--hbr-foil);box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 8px rgba(245,197,66,.1);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1),opacity .25s ease;
+}
+.video-play:hover{transform:translate(-50%,-50%) scale(1.08)}
+.video-play:active{transform:translate(-50%,-50%) scale(.96)}
+.video-play svg{width:22px;height:22px;margin-left:2px}
+.video-play.hidden{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.8)}
+
 /* ---------- how-to strip ---------- */
 .howto{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;max-width:600px;margin:16px auto 0;padding:0 16px}
 .howto-chip{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:100px;background:rgba(245,197,66,.05);
@@ -227,10 +240,13 @@ mark{background:var(--hbr-foil);color:#1A1208;border-radius:3px;padding:0 1px}
 
   <div class="hero-frame">
     <div class="hero-img-wrap">
-      <video poster="66b-hero-library.jpg" autoplay muted loop playsinline preload="metadata"
+      <video id="libraryVideo" poster="66b-hero-library.jpg" playsinline preload="metadata"
         aria-label="A slow camera push through an ancient candlelit library of scrolls and leather-bound books">
         <source src="66b-library-video.mp4" type="video/mp4">
       </video>
+      <button type="button" class="video-play" id="libraryVideoPlay" aria-label="Play video">
+        <svg viewBox="0 0 24 24" fill="#1A1208"><path d="M6 4.5v15l14-7.5z"/></svg>
+      </button>
     </div>
   </div>
 
@@ -732,6 +748,20 @@ wizardToggle.addEventListener("click", () => {
   wizardBody.hidden = !wizardBody.hidden;
   if(opening) wizardBody.scrollIntoView({behavior:"smooth", block:"nearest"});
 });
+
+// ---------- CLICK-TO-PLAY HERO VIDEO ----------
+(function(){
+  const video = document.getElementById("libraryVideo");
+  const btn = document.getElementById("libraryVideoPlay");
+  if(!video || !btn) return;
+  btn.addEventListener("click", () => {
+    video.play();
+    btn.classList.add("hidden");
+  });
+  video.addEventListener("play", () => btn.classList.add("hidden"));
+  video.addEventListener("pause", () => btn.classList.remove("hidden"));
+  video.addEventListener("ended", () => btn.classList.remove("hidden"));
+})();
 
 // ---------- INIT ----------
 buildChips();
