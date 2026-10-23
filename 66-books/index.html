@@ -176,18 +176,22 @@ img{display:block;max-width:100%}
 .card.open .chev{transform:rotate(180deg);color:var(--hbr-gold)}
 .card-oneline{margin-top:7px;font-size:13.5px;color:var(--hbr-soft);line-height:1.4}
 .card-desc{max-height:0;overflow:hidden;opacity:0;transition:max-height .25s ease,opacity .2s ease,margin-top .25s ease}
-.card.open .card-desc{max-height:310px;opacity:1;margin-top:10px}
-.card-desc-inner{padding-top:10px;border-top:1px solid var(--hbr-line);font-size:14px;color:#E6DCC6;line-height:1.55}
-.card-stats{display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--hbr-soft)}
+.card.open .card-desc{max-height:900px;opacity:1;margin-top:10px}
+.card-desc-inner{padding-top:12px;border-top:1px solid var(--hbr-line);font-size:14px;color:#E6DCC6;line-height:1.55}
+.cdi-section{margin-top:14px;padding-top:14px;border-top:1px solid rgba(245,197,66,.14)}
+.cdi-section:first-child{margin-top:0;padding-top:0;border-top:0}
+.cdi-label{display:block;font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--hbr-gold);margin-bottom:6px}
+.card-stats{display:flex;gap:16px;margin-top:4px;font-size:12px;color:var(--hbr-soft)}
 .card-stats b{color:var(--hbr-gold2);font-weight:700}
-.card-era{margin-top:10px;font-size:12px;color:var(--hbr-soft)}
-.card-era b{color:var(--hbr-gold2);font-weight:600}
-.card-verse{margin-top:12px;padding:12px 14px;border-left:2px solid var(--hbr-gold);border-radius:0 8px 8px 0;
+.card-era-text{font-size:13.5px;color:#E6DCC6}
+.card-era-text b{color:var(--hbr-gold2);font-weight:600}
+.card-verse{padding:12px 14px;border-left:2px solid var(--hbr-gold);border-radius:0 8px 8px 0;
   background:rgba(245,197,66,.05);font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:13.5px;
   color:#F4ECD6;line-height:1.5}
 .card-verse cite{display:block;margin-top:5px;font-family:'Inter',sans-serif;font-style:normal;font-size:10.5px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--hbr-gold)}
-.card-related{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--hbr-soft)}
+.card-related{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--hbr-soft)}
 .card-related button{appearance:none;border:1px solid var(--hbr-line);background:rgba(245,197,66,.06);color:var(--hbr-gold2);
   font-family:'Inter',sans-serif;font-weight:700;font-size:12px;padding:6px 11px;border-radius:100px;cursor:pointer;
   transition:border-color .15s ease}
@@ -623,11 +627,22 @@ function render(){
       </div>
       <p class="card-oneline">${highlight(book.desc, query)}</p>
       <div class="card-desc"><div class="card-desc-inner">
-        ${highlight(book.desc, query)}
-        <div class="card-stats"><span>Book <b>${canonIdx + 1}</b> of 66</span><span><b>${book.chapters}</b> chapter${book.chapters === 1 ? "" : "s"}</span></div>
-        <p class="card-era">Where this fits on your atlas: <b>${book.era}</b></p>
-        <blockquote class="card-verse">“${book.verse.text}”<cite>${book.verse.ref}</cite></blockquote>
-        <div class="card-related"><span>Read next:</span><button type="button" class="related-btn" data-related="${book.related.name}">${book.related.name} →</button><span>— ${book.related.why}</span></div>
+        <div class="cdi-section">
+          <span class="cdi-label">At A Glance</span>
+          <div class="card-stats"><span>Book <b>${canonIdx + 1}</b> of 66</span><span><b>${book.chapters}</b> chapter${book.chapters === 1 ? "" : "s"}</span></div>
+        </div>
+        <div class="cdi-section">
+          <span class="cdi-label">Where This Fits On Your Atlas</span>
+          <p class="card-era-text"><b>${book.era}</b></p>
+        </div>
+        <div class="cdi-section">
+          <span class="cdi-label">Key Verse</span>
+          <blockquote class="card-verse">“${book.verse.text}”<cite>${book.verse.ref}</cite></blockquote>
+        </div>
+        <div class="cdi-section">
+          <span class="cdi-label">Read Next</span>
+          <div class="card-related"><button type="button" class="related-btn" data-related="${book.related.name}">${book.related.name} →</button><span>${book.related.why}</span></div>
+        </div>
         <div class="card-nav">
           <button type="button" class="nav-prev" ${prevBook ? "" : "disabled"}>${prevBook ? "← " + prevBook.name : "← —"}</button>
           <button type="button" class="nav-next" ${nextBook ? "" : "disabled"}>${nextBook ? nextBook.name + " →" : "— →"}</button>
